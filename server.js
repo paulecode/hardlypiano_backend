@@ -1,11 +1,7 @@
 // env variables
 const PORT = process.env.PORT || 3000;
+const database = require('./database.js');
 const app = require('./app.js');
 
-const database = require('./database.js');
-database.connect().then(() => {
-	console.log('Starting timeout');
-	setTimeout(() => {
-		database.close();
-	}, 5000);
-});
+database.connect();
+app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));
