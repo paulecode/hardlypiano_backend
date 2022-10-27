@@ -1,0 +1,27 @@
+{
+	"name": "hardlypiano-backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon -r dotenv/config server.js",
+		"test": "jest --detectOpenHandles",
+		"testwatch": "jest --watch --detectOpenHandles"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcrypt": "^5.1.0",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.6.5",
+		"nodemon": "^2.0.20"
+	},
+	"devDependencies": {
+		"jest": "^29.2.1",
+		"mongodb-memory-server": "^8.9.3",
+		"supertest": "^6.3.0"
+	}
+}
