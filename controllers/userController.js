@@ -7,4 +7,9 @@ async function getUsers(req, res) {
 	res.send(result);
 }
 
-module.exports = { getUsers };
+async function deleteAllUsers(req, res) {
+	const deleted = await userService.deleteAll();
+	res.send(`deleted ${deleted.deletedCount} users`);
+}
+
+module.exports = { getUsers, deleteAllUsers };

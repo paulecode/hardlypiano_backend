@@ -1,6 +1,7 @@
 const UserModel = require('../models/User.js');
 
 const getUsers = (User) => () => {
+	console.log('userService.getUsers called');
 	return User.find({});
 };
 
@@ -10,21 +11,22 @@ const getUserById = (User) => (userId) => {
 	return User.findById(userId);
 };
 
-const createUser = (User) => (username, password) => {
+const createUser = (User) => async (username, password) => {
 	if (!username || !password) {
 		console.log('ayyy');
 		throw new Error('username or password not provided');
 		return;
 	}
 
-	if (User.find({ username })) {
-		console.log('nooo');
+	if (await User.findOne({ username }))
 		throw new Error('username already taken');
-		return;
-	}
 
 	const user = new User({ username, password });
 	return user.save();
+};
+
+const deleteAll = (User) => (username, password) => {
+	return User.deleteMany({});
 };
 
 module.exports = (User) => {
@@ -32,5 +34,6 @@ module.exports = (User) => {
 		getUserById: getUserById(User),
 		getUsers: getUsers(User),
 		createUser: createUser(User),
+		deleteAll: deleteAll(User),
 	};
 };
