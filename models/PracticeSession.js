@@ -13,6 +13,9 @@ const PracticeSessionSchema = new mongoose.Schema({
 	type: String,
 });
 
-const PracticeSession = new mongoose.Schema('PracticeSession', PieceSchema);
+const PracticeSession = new mongoose.model(
+	'PracticeSession',
+	PracticeSessionSchema
+);
 
 module.exports = PracticeSession;

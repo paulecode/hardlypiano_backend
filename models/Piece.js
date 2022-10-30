@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const collection = 'users.pieces';
+// const collection = 'users.pieces';
 
 const PracticeSession = require('./PracticeSession');
 
@@ -22,6 +22,6 @@ const PieceSchema = new mongoose.Schema({
 	practiceSessions: [PracticeSession.schema],
 });
 
-const Piece = new mongoose.Schema('Piece', PieceSchema);
+const Piece = new mongoose.model('Piece', PieceSchema);
 
 module.exports = Piece;

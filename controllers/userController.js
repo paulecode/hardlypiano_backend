@@ -1,7 +1,8 @@
-const userService = require('../services/userService');
+const userModel = require('../models/User');
+const userService = require('../services/userService')(userModel);
 
 async function getUsers(req, res) {
-	const result = await userService.get();
+	const result = await userService.getUsers();
 	console.log(result);
 	res.send(result);
 }

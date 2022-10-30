@@ -1,10 +1,18 @@
 const UserModel = require('../models/User.js');
 
-async function get() {
-	// const result = await UserModel.find();
-	console.log('got here too');
-	const result = await 'hello';
-	return result;
-}
+const getUsers = (User) => () => {
+	return User.find({});
+};
 
-module.exports = { get };
+const getUserById = (User) => (userId) => {
+	if (!userId) throw new Error('No userId provided.');
+
+	return User.findById(userId);
+};
+
+module.exports = (User) => {
+	return {
+		getUserById: getUserById(User),
+		getUsers: getUsers(User),
+	};
+};
