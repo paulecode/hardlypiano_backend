@@ -4,6 +4,6 @@ const path = '/auth';
 
 const authController = require('../controllers/authController');
 
-router.get('/register', authController.register);
+router.post('/register', authController.register);
 
 module.exports = { path, router };
