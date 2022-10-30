@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const collection = 'users';
 
+const Piece = require('./Piece');
+
 const UserSchema = new mongoose.Schema({
 	username: String,
 	password: String,
+	pieces: [Piece.schema],
 });
 
 const User = mongoose.model('User', UserSchema, collection);

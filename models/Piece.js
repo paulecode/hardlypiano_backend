@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const collection = 'users.pieces';
 
+const PracticeSession = require('./PracticeSession');
+
 const PieceSchema = new mongoose.Schema({
 	title: {
 		type: String,
@@ -17,6 +19,7 @@ const PieceSchema = new mongoose.Schema({
 		difficulty: Number,
 	},
 	priority: Number,
+	practiceSessions: [PracticeSession.schema],
 });
 
 const Piece = new mongoose.Schema('Piece', PieceSchema);
