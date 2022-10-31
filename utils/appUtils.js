@@ -52,7 +52,7 @@ function importRoutes3(app, subdirectory = '', level = 1) {
 		} = require(`../${root}/${subdirectory}/${route.name}`);
 
 		const pathName = `${subdirectory}${path}`;
-		console.log(path);
+		// console.log(path);
 	});
 }
 
