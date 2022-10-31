@@ -5,10 +5,10 @@ const getUsers = (User) => () => {
 	return User.find({});
 };
 
-const getUserById = (User) => (userId) => {
+const getUserById = (User) => async (userId) => {
+	console.log('got here', userId);
 	if (!userId) throw new Error('No userId provided.');
-
-	return User.findById(userId);
+	return await User.findById(userId);
 };
 
 const find = (User) => async (filters) => {

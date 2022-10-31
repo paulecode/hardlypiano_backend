@@ -41,7 +41,7 @@ async function login(req, res) {
 	if (!validPassword) return res.status(400).send('Invalid password.');
 
 	const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-	return res.header('auth-token', token).send({ id: user._id, token });
+	return res.header('Auth-Token', token).send({ id: user._id, token });
 }
 
 module.exports = { register, login };

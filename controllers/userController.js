@@ -12,4 +12,9 @@ async function deleteAllUsers(req, res) {
 	res.send(`deleted ${deleted.deletedCount} users`);
 }
 
-module.exports = { getAll, deleteAllUsers };
+async function get(req, res) {
+	const user = await userService.getUserById(req.user._id);
+	return res.status(200).send(user);
+}
+
+module.exports = { get, getAll, deleteAllUsers };
