@@ -20,6 +20,7 @@ const PieceSchema = new mongoose.Schema({
 	},
 	priority: Number,
 	practiceSessions: [PracticeSession.schema],
+	totalPracticeMinutes: Number,
 });
 
 const Piece = new mongoose.model('Piece', PieceSchema);
