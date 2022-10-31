@@ -36,38 +36,19 @@ function importRoutes2(app, root = 'routes') {
 
 function importRoutes3(app, subdirectory = '', level = 1) {
 	const root = 'routes';
-	const filepath = root + subdirectory;
-	const routes = fs.readdirSync(filepath, {
+	const directory = root + subdirectory;
+	const files = fs.readdirSync(directory, {
 		withFileTypes: true,
 	});
-	routes.forEach((route) => {
-		// const dashes = '-'.repeat(level * 2);
-		console.log(route.name);
-		if (route.isDirectory()) {
-			const subdirectorypath = subdirectory + '/' + route.name;
-			console.log('HELLOOO', subdirectorypath);
-			return importRoutes3(app, `${subdirectory}/${route.name}`, level + 1);
-		} else {
-			const filename = root + subdirectory + route.name;
+	files.forEach((file) => {
+		if (file.isDirectory()) {
+			return importRoutes3(app, `${subdirectory}/${file.name}`, level + 1);
 		}
-
-		require;
-
-<<<<<<< Updated upstream
-		const pathName = `${subdirectory}${path}`;
-=======
-		// const {
-		// 	path,
-		// 	router,
-		// } = require(`../${root}/${subdirectory}/${route.name}`);
-
-		// const pathName = `${subdirectory}${path}`;
->>>>>>> Stashed changes
-		// console.log(path);
+		const filePath = root + `${subdirectory}/${file.name}`;
+		const { path, router } = require(`../${filePath}`);
+		console.log(subdirectory + path);
+		app.use(subdirectory + path, router);
 	});
-	// const subdirectory = '/users';
-	// const path = '/path';
-	// app.use('/users/practice'); // subdirectory + path
 }
 
 module.exports = { importMiddleware, importRoutes2: importRoutes3 };
