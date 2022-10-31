@@ -9,12 +9,19 @@ function importMiddleware(app) {
 	});
 }
 
-// Import routes from "/routes" directory
-function importRoutes(app) {
-	const routes = fs.readdirSync('./routes');
+// Import routes recursively from "/routes" directory
+function importRoutes(app, subdirectory = '') {
+	const root = 'routes'; // excluded from endpoint routes
+	const directory = root + subdirectory;
+	const routes = fs.readdirSync(directory, {
+		withFileTypes: true,
+	});
 	routes.forEach((route) => {
-		const { path, router } = require(`../routes/${route}`);
-		app.use(path, router);
+		if (route.isDirectory()) {
+			return importRoutes(app, `${subdirectory}/${route.name}`);
+		}
+		const { path, router } = require(`../${directory}/${route.name}`);
+		app.use(subdirectory + path, router);
 	});
 }
 
