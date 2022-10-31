@@ -36,10 +36,18 @@ const getPieceById = (Piece, UserService) => async (userId, pieceId) => {
 	return piece;
 };
 
+const addPracticeToPiece = (Piece) => async (piece, session) => {
+	piece.practiceSessions.push(session);
+	piece.totalPracticeMinutes += session.durationInMinutes;
+
+	return await piece.save();
+};
+
 module.exports = (Piece = PieceModel, UserService = userService) => {
 	return {
 		getPieces: getPieces(Piece, UserService),
 		getPieceById: getPieceById(Piece, UserService),
 		createPiece: createPiece(Piece, UserService),
+		addPracticeToPiece: addPracticeToPiece(Piece, UserService),
 	};
 };
