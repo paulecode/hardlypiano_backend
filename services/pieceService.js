@@ -37,6 +37,7 @@ const getPieceById = (Piece, UserService) => async (userId, pieceId) => {
 };
 
 const addPracticeToPiece = (Piece) => async (piece, session) => {
+	console.log(piece);
 	piece.practiceSessions.push(session);
 	piece.totalPracticeMinutes += session.durationInMinutes;
 
