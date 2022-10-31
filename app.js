@@ -1,18 +1,13 @@
 const express = require('express');
 const app = express();
+const appUtils = require('./utils/appUtils');
 
 // Application-level middleware
 app.use(express.json()); // parses JSON, makes "req.body" available
-
-// Custom middleware and routing
-const appUtils = require('./utils/appUtils');
 appUtils.importMiddleware(app);
-appUtils.importRoutes(app);
 
-// basic API call
-app.get('/', (req, res) => {
-	res.send({ message: 'Hello, world' });
-});
+// Routing
+appUtils.importRoutes(app);
 
 // export
 module.exports = app;
