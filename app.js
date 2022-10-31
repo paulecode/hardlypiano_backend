@@ -4,7 +4,9 @@ const appUtils = require('./utils/appUtils');
 
 // Application-level middleware
 app.use(express.json()); // parses JSON, makes "req.body" available
-appUtils.importMiddleware(app);
+const logRequestMiddleware = require('./middleware/logRequest');
+app.use(logRequestMiddleware);
+// appUtils.importMiddleware(app);
 
 // Routing
 appUtils.importRoutes(app);
