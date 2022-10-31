@@ -1,7 +1,7 @@
 const userModel = require('../models/User');
 const userService = require('../services/userService')(userModel);
 
-async function getUsers(req, res) {
+async function getAll(req, res) {
 	const result = await userService.getUsers();
 	console.log(result);
 	res.send(result);
@@ -12,4 +12,9 @@ async function deleteAllUsers(req, res) {
 	res.send(`deleted ${deleted.deletedCount} users`);
 }
 
-module.exports = { getUsers, deleteAllUsers };
+async function get(req, res) {
+	const user = await userService.getUserById(req.user._id);
+	return res.status(200).send(user);
+}
+
+module.exports = { get, getAll, deleteAllUsers };

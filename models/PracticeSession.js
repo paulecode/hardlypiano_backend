@@ -9,6 +9,7 @@ const PracticeSessionSchema = new mongoose.Schema({
 		type: Date,
 		required: true,
 	},
+	durationInMinutes: Number,
 	score: Number,
 	type: String,
 });
