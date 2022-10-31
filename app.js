@@ -9,7 +9,7 @@ app.use(logRequestMiddleware);
 // appUtils.importMiddleware(app);
 
 // Routing
-appUtils.importRoutes(app);
+appUtils.importRoutes2(app);
 
 // export
 module.exports = app;
