@@ -9,7 +9,6 @@ const getUsers = (User) => () => {
 };
 
 const getUserById = (User) => async (userId) => {
-	console.log('got here', userId);
 	if (!userId) throw new Error('No userId provided.');
 	return await User.findById(userId);
 };
@@ -20,6 +19,12 @@ const find = (User) => async (filters) => {
 
 const findOne = (User) => async (filters) => {
 	return await User.findOne(filters);
+};
+
+const addPiece = (User) => async (userId, piece) => {
+	const user = await User.findById(userId);
+	user.pieces.push(piece);
+	return await user.save();
 };
 
 const createUser =
@@ -51,5 +56,6 @@ module.exports = (User = UserModel) => {
 		deleteAll: deleteAll(User),
 		find: find(User),
 		findOne: findOne(User),
+		addPiece: addPiece(User),
 	};
 };
