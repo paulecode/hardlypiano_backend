@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 const UserModel = require('../models/User.js');
 
 const getUsers = (User) => () => {
@@ -23,23 +26,24 @@ const createUser =
 	(User) =>
 	async ({ username, password }) => {
 		if (!username || !password) {
-			console.log('ayyy');
-			throw new Error('username or password not provided');
+			throw new Error('Username or password not provided.');
 			return;
 		}
-
-		if (await User.findOne({ username }))
-			throw new Error('username already taken');
-
-		const user = new User({ username, password });
-		return user.save();
+		if (await User.findOne({ username })) {
+			throw new Error('Username already in use.');
+			return;
+		}
+		const salt = await bcrypt.genSalt(10);
+		const hashed = await bcrypt.hash(password, salt);
+		const user = new User({ username, password: hashed });
+		return await user.save();
 	};
 
 const deleteAll = (User) => (username, password) => {
 	return User.deleteMany({});
 };
 
-module.exports = (User) => {
+module.exports = (User = UserModel) => {
 	return {
 		getUserById: getUserById(User),
 		getUsers: getUsers(User),

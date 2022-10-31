@@ -1,32 +1,40 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const userModel = require('../models/User');
-const userService = require('../services/userService')(userModel);
+const userService = require('../services/userService')();
 
 async function register(req, res) {
 	const { username, password } = req.body;
 
-	if (!username || !password)
-		return res.status(400).send('Bad request. Missing fields');
-
-	const foundUser = await userService.findOne({ username });
-	if (foundUser) {
-		return res.status(409).send('Bad request. Username already in use.');
-	}
-
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(password, salt);
-
 	try {
-		const user = await userService.createUser({
-			username: username,
-			password: hashedPassword,
-		});
-		res.status(201).send({ message: 'user successfully registered', user });
+		const user = await userService.createUser({ username, password });
+		res.status(200).send(user);
 	} catch (e) {
 		res.status(400).send(e.message);
 	}
+
+	// if (!username || !password)
+	// 	return res
+	// 		.status(400)
+	// 		.send('Bad request. Username and/or password not provided.');
+
+	// const foundUser = await userService.findOne({ username });
+	// if (foundUser) {
+	// 	return res.status(409).send('Bad request. Username already in use.');
+	// }
+
+	// const salt = await bcrypt.genSalt(10);
+	// const hashedPassword = await bcrypt.hash(password, salt);
+
+	// try {
+	// 	const user = await userService.createUser({
+	// 		username: username,
+	// 		password: hashedPassword,
+	// 	});
+	// 	res.status(201).send({ message: 'user successfully registered', user });
+	// } catch (e) {
+	// 	res.status(400).send(e.message);
+	// }
 }
 
 async function login(req, res) {
