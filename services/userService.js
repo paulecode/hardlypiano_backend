@@ -27,20 +27,22 @@ const addPiece = (User) => async (userId, piece) => {
     return await user.save()
 }
 
-const createUser = (User) => async ({ username, password }) => {
-    if (!username || !password) {
-        throw new Error("Username or password not provided.")
-        return
+const createUser =
+    (User) =>
+    async ({ username, password }) => {
+        if (!username || !password) {
+            throw new Error("Username or password not provided.")
+            return
+        }
+        if (await User.findOne({ username })) {
+            throw new Error("Username already in use.")
+            return
+        }
+        const salt = await bcrypt.genSalt(10)
+        const hashed = await bcrypt.hash(password, salt)
+        const user = new User({ username, password: hashed })
+        return await user.save()
     }
-    if (await User.findOne({ username })) {
-        throw new Error("Username already in use.")
-        return
-    }
-    const salt = await bcrypt.genSalt(10)
-    const hashed = await bcrypt.hash(password, salt)
-    const user = new User({ username, password: hashed })
-    return await user.save()
-}
 
 const deleteAll = (User) => (username, password) => {
     return User.deleteMany({})

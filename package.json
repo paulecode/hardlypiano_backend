@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "nodemon -r dotenv/config server.js",
         "test": "jest --detectOpenHandles",
-        "testwatch": "jest --watch --detectOpenHandles"
+        "testwatch": "jest --watch --detectOpenHandles",
+        "prettier": "prettier . --write"
     },
     "keywords": [],
     "author": "",
