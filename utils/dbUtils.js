@@ -1,6 +1,6 @@
 const getUri = () => {
-	const uri = process.env.MONGODB_URI;
-	return uri;
-};
+    const uri = process.env.MONGODB_URI
+    return uri
+}
 
-module.exports = { getUri };
+module.exports = { getUri }

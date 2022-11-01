@@ -1,28 +1,28 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose")
 // const collection = 'users.pieces';
 
-const PracticeSession = require('./PracticeSession');
+const PracticeSession = require("./PracticeSession")
 
 const PieceSchema = new mongoose.Schema({
-	title: {
-		type: String,
-		required: true,
-	},
-	composer: {
-		type: String,
-		required: true,
-	},
-	metadata: {
-		score: Number,
-		keySignature: String,
-		timeSignature: String,
-		difficulty: Number,
-	},
-	priority: Number,
-	practiceSessions: [PracticeSession.schema],
-	totalPracticeMinutes: Number,
-});
+    title: {
+        type: String,
+        required: true,
+    },
+    composer: {
+        type: String,
+        required: true,
+    },
+    metadata: {
+        score: Number,
+        keySignature: String,
+        timeSignature: String,
+        difficulty: Number,
+    },
+    priority: Number,
+    practiceSessions: [PracticeSession.schema],
+    totalPracticeMinutes: Number,
+})
 
-const Piece = new mongoose.model('Piece', PieceSchema);
+const Piece = new mongoose.model("Piece", PieceSchema)
 
-module.exports = Piece;
+module.exports = Piece
