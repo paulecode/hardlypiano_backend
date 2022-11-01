@@ -16,4 +16,5 @@ nvm use 16
 npm install
 
 #start our node app in the background
-node server.js > app.out.log 2> app.err.log < /dev/null & 
+# node server.js > app.out.log 2> app.err.log < /dev/null & 
+npm run start
