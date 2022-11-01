@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV; // 'test', 'development', 'production'
-const db = require(`./${env}`);
+const db = require(`./${env}-db`);
 
 const mongoose = require('mongoose');
 mongoose.connection.on('open', () => {

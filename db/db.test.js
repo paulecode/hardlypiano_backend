@@ -1,4 +1,4 @@
-const db = require('./db');
+const db = require('./index');
 const mongoose = require('mongoose');
 
 const testSchema = new mongoose.Schema({
@@ -12,6 +12,7 @@ describe('creates a test database', () => {
 		await db.connect();
 	});
 	beforeEach(async () => {
+		console.log('clearing');
 		await db.clear();
 	});
 	afterAll(async () => {
@@ -26,5 +27,9 @@ describe('creates a test database', () => {
 		const found = await User.findOne({ username, password });
 		expect(found.username).toEqual(username);
 		expect(found.password).toEqual(password);
+	});
+	it('clears a collection after a test', async () => {
+		const found = await User.find();
+		expect(found.length).toEqual(0);
 	});
 });
