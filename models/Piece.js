@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-// const collection = 'users.pieces';
-
 const PracticeSession = require('./PracticeSession');
 
 const PieceSchema = new mongoose.Schema({
