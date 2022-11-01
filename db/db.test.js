@@ -12,10 +12,11 @@ describe('creates a test database', () => {
 		await db.connect();
 	});
 	beforeEach(async () => {
-		console.log('clearing');
+		// console.log('clearing');
 		await db.clear();
 	});
 	afterAll(async () => {
+		console.log('got here');
 		await db.close();
 	});
 	it('creates, saves and finds user', async () => {
@@ -29,7 +30,16 @@ describe('creates a test database', () => {
 		expect(found.password).toEqual(password);
 	});
 	it('clears a collection after a test', async () => {
-		const found = await User.find();
+		const found = await User.find({});
 		expect(found.length).toEqual(0);
+	});
+	it('drops a collection successfully', async () => {
+		// const collections = await mongoose.connection.db
+		// 	.listCollections()
+		// 	.toArray();
+		const models = mongoose.modelNames();
+		console.log(models);
+		// console.log(collections.map((c) => c.name));
+		// expect(collections.length).toEqual(0);
 	});
 });
