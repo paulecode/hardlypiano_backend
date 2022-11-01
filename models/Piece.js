@@ -1,12 +1,5 @@
-<<<<<<< HEAD
-const mongoose = require('mongoose');
-const PracticeSession = require('./PracticeSession');
-=======
 const mongoose = require("mongoose")
-// const collection = 'users.pieces';
-
 const PracticeSession = require("./PracticeSession")
->>>>>>> develop
 
 const PieceSchema = new mongoose.Schema({
     title: {
