@@ -1,6 +1,6 @@
 // env variables
 const PORT = process.env.PORT || 3000;
-const database = require('./database.js');
+const database = require('./db');
 const app = require('./app.js');
 
 database.connect();

@@ -13,7 +13,6 @@ async function connect() {
 
 async function close() {
 	await mongoose.connection.close();
-	return;
 }
 
 mongoose.connection.on('open', () => {
@@ -26,4 +25,4 @@ mongoose.connection.on('close', () => {
 	console.log('successfully closed connection');
 });
 
-module.exports = { connect, close };
+module.exports = { connect, close, clear };
