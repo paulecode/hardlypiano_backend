@@ -4,8 +4,14 @@ const collection = 'users';
 const Piece = require('./Piece');
 
 const UserSchema = new mongoose.Schema({
-	username: String,
-	password: String,
+	username: {
+		type: String,
+		required: true,
+	},
+	password: {
+		type: String,
+		required: true,
+	},
 	pieces: [Piece.schema],
 });
 

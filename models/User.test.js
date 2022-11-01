@@ -13,8 +13,8 @@ describe('model User is defined and functional', () => {
 		expect(user.password).toBeDefined();
 	});
 	it('model User requires username and password', () => {
-		const user = { username: 'foo' };
-		expect(() => new User(user)).toThrow();
+		const user = new User({ username: 'foo' });
+		expect(user.save).toThrow();
 	});
 	it('model User is initialized with pieces array', () => {
 		const user = new User({ username: 'foo', password: 'bar' });
