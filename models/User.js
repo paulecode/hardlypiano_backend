@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const collection = 'users';
+const mongoose = require("mongoose")
+const collection = "users"
 
-const Piece = require('./Piece');
+const Piece = require("./Piece")
 
 const UserSchema = new mongoose.Schema({
 	username: {
@@ -15,6 +15,6 @@ const UserSchema = new mongoose.Schema({
 	pieces: [Piece.schema],
 });
 
-const User = mongoose.model('User', UserSchema, collection);
+const User = mongoose.model("User", UserSchema, collection)
 
-module.exports = User;
+module.exports = User
