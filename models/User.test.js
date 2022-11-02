@@ -66,6 +66,19 @@ describe("model User is defined and functional", () => {
         expect(oldUsername).toEqual(null)
         expect(newUsername).not.toEqual(null)
     })
+    it("model User can't be edited with numbers", async () => {
+        const user = new User({ username: "foo", password: "bar" })
+        const saved = await user.save()
+
+        user.username = ""
+        expect(await user.save).toThrow()
+
+        user.username = null
+        expect(await user.save).toThrow()
+
+        user.username = 2030
+        expect(await user.save).toThrow()
+    })
     it("model User is initialized with pieces array", () => {
         const user = new User({ username: "foo", password: "bar" })
         expect(user.pieces).toBeInstanceOf(Array)
