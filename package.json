@@ -1,28 +1,28 @@
 {
-	"name": "hardlypiano-backend",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"dev": "NODE_ENV=development nodemon -r dotenv/config server.js",
-		"test": "jest --detectOpenHandles",
-		"test:watch": "jest --watch --detectOpenHandles"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"bcrypt": "^5.1.0",
-		"dotenv": "^16.0.3",
-		"express": "^4.18.2",
-		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.6.5",
-		"nodemon": "^2.0.20"
-	},
-	"devDependencies": {
-		"jest": "^29.2.1",
-		"mongodb-memory-server": "^8.9.3",
-		"prettier": "^2.7.1",
-		"supertest": "^6.3.0"
-	}
+    "name": "hardlypiano-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "NODE_ENV=development nodemon -r dotenv/config server.js",
+        "test": "jest --detectOpenHandles",
+        "test:watch": "jest --watch --detectOpenHandles"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.6.5",
+        "nodemon": "^2.0.20"
+    },
+    "devDependencies": {
+        "jest": "^29.2.1",
+        "mongodb-memory-server": "^8.9.3",
+        "prettier": "^2.7.1",
+        "supertest": "^6.3.0"
+    }
 }
