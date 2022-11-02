@@ -36,7 +36,7 @@ describe("model User is defined and functional", () => {
         const user = new User({ username: "foo" })
         expect(await user.save).toThrow()
     })
-    it("model User rejects empty strings", async () => {
+    it("model User rejects null input and empty strings", async () => {
         const user1 = new User({ username: null, password: null })
         expect(await user1.save).toThrow()
 
@@ -54,8 +54,30 @@ describe("model User is defined and functional", () => {
         const user2 = new User({ username: 123, password: [1, 2, 3] })
         expect(await user2.save).toThrow()
     })
+    it("model User is editable", async () => {
+        const user = new User({ username: "foo", password: "bar" })
+        const saved = await user.save()
+
+        saved.username = "baz"
+        await saved.save()
+
+        const oldUsername = await User.findOne({ username: "foo" })
+        const newUsername = await User.findOne({ username: "baz" })
+        expect(oldUsername).toEqual(null)
+        expect(newUsername).not.toEqual(null)
+    })
     it("model User is initialized with pieces array", () => {
         const user = new User({ username: "foo", password: "bar" })
         expect(user.pieces).toBeInstanceOf(Array)
+    })
+    it("model User rejects fields not in model", async () => {
+        const user = new User({
+            username: "foo",
+            email: "foo@bar.com",
+            password: "bar",
+        })
+        const saved = await user.save()
+        expect(saved.username).toBeDefined()
+        expect(saved.email).not.toBeDefined()
     })
 })
