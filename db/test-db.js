@@ -16,10 +16,10 @@ const close = async () => {
 
 const clear = async () => {
     const collections = mongoose.connection.collections
-    await mongoose.modelNames().forEach(async (model) => {
-        // console.log('HERE IT IS', model);
-        await mongoose.models[model].collection.drop()
-    })
+    for (const key in collections) {
+        const collection = collections[key]
+        await collection.deleteMany()
+    }
 }
 
 module.exports = { connect, close, clear }

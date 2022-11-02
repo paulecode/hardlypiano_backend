@@ -1,9 +1,8 @@
 const mongoose = require("mongoose")
 const { getProductionUri } = require("../utils/dbUtils")
 
-const connect = async (givenUri) => {
-    const uri = givenUri || getProductionUri()
-    console.log(givenUri)
+const connect = async () => {
+    const uri = getProductionUri()
     const num = await mongoose
         .connect(uri)
         .then(() => {

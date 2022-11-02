@@ -1,6 +1,17 @@
 const User = require("./User")
+const db = require("../db")
 
-xdescribe("model User is defined and functional", () => {
+describe("model User is defined and functional", () => {
+    beforeAll(async () => {
+        await db.connect()
+    })
+    beforeEach(async () => {
+        await db.clear()
+    })
+    afterAll(async () => {
+        await db.close()
+    })
+
     it("model User is defined", () => {
         expect(User).toBeDefined()
     })
@@ -12,21 +23,36 @@ xdescribe("model User is defined and functional", () => {
         expect(user.username).toBeDefined()
         expect(user.password).toBeDefined()
     })
-    it("model User requires username and password", () => {
-        const user = new User({ username: "foo" })
-        expect(user.save).toThrow()
+    it("model User is successfully saved", async () => {
+        const user = new User({
+            username: "foo",
+            password: "bar",
+        })
+        const saved = await user.save()
+        expect(saved.username).toEqual(user.username)
+        expect(saved.password).toEqual(user.password)
     })
-    it("model User only accepts strings for username and password", async () => {
-        const user1 = new User({ username: "foo", password: "bar" })
-        try {
-            await user1.save()
-        } catch (e) {
-            console.log(e)
-        }
-        // expect(user1.save).not.toThrow();
+    it("model User requires username and password", async () => {
+        const user = new User({ username: "foo" })
+        expect(await user.save).toThrow()
+    })
+    it("model User rejects empty strings", async () => {
+        const user1 = new User({ username: null, password: null })
+        expect(await user1.save).toThrow()
 
-        // const user2 = new User({ username: 'foo', password: 'bar' });
-        // expect(user2.save).not.toThrow();
+        const user2 = new User({ username: "", password: "" })
+        expect(await user2.save).toThrow()
+    })
+    it("model User rejects non-strings for username and password", async () => {
+        const user1 = new User({
+            username: "foo",
+            password: "bar",
+        })
+        const saved = await user1.save()
+        expect(saved.username).toEqual(user1.username)
+
+        const user2 = new User({ username: 123, password: [1, 2, 3] })
+        expect(await user2.save).toThrow()
     })
     it("model User is initialized with pieces array", () => {
         const user = new User({ username: "foo", password: "bar" })
