@@ -30,6 +30,7 @@ const addPiece = (User) => async (userId, piece) => {
 const createUser =
     (User) =>
     async ({ username, password }) => {
+        console.log(User)
         if (!username || !password) {
             throw new Error("Username or password not provided.")
             return
