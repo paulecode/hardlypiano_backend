@@ -16,7 +16,7 @@ describe("creates a test database", () => {
         await db.clear()
     })
     afterAll(async () => {
-        console.log("got here")
+        // console.log("got here")
         await db.close()
     })
     it("creates, saves and finds user", async () => {
@@ -38,7 +38,7 @@ describe("creates a test database", () => {
         // 	.listCollections()
         // 	.toArray();
         const models = mongoose.modelNames()
-        console.log(models)
+        // console.log(models)
         // console.log(collections.map((c) => c.name));
         // expect(collections.length).toEqual(0);
     })
