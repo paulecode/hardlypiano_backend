@@ -30,73 +30,62 @@ const { v4: uuidv4 } = require("uuid")
 // }
 
 function createMockModel(collection = []) {
-    // let querySelect = [...collection]
-    let querySelect = []
-    let queryStarted = false
+    let queryResults
+    let queryStarted
+
     return class {
-        // currentCollection = collection
         // Model methods
-        static sayHi() {
-            console.log("hello")
-            return
+        static startQuery() {
+            if (!queryStarted) {
+                queryResults = [...collection]
+                queryStarted = true
+            }
         }
-        static getAll() {
-            return this
-        }
-        static mapUsernames() {
-            return this
+        static endQuery() {
+            queryResults = [...collection]
+            queryStarted = false
         }
         static async findOne(filter) {
+            this.startQuery()
             const found =
-                querySelect.find((item) => {
+                queryResults.find((item) => {
                     for (const key in filter) {
                         if (filter[key] !== item[key]) return false
                     }
                     return true
                 }) || null
-            querySelect = found
-            return found
+            queryResults = found
+            return this
         }
         static find(filter) {
-            if (!queryStarted) {
-                querySelect = [...collection]
-                queryStarted = true
-            }
-            console.log(queryStarted)
-            const found = querySelect.filter((item) => {
+            this.startQuery()
+            const found = queryResults.filter((item) => {
                 for (const key in filter) {
                     if (filter[key] !== item[key]) return false
                 }
                 return true
             })
-            querySelect = found
+            queryResults = [...found]
             return this
         }
         static select(stringOfFields) {
-            if (!queryStarted) {
-                querySelect = [...collection]
-                queryStarted = true
-            }
-            console.log(queryStarted)
+            this.startQuery()
             const fields = stringOfFields.split(" ")
-
-            const selected = querySelect.map((item) => {
+            const selected = queryResults.map((item) => {
                 const obj = {}
                 for (const key of fields) {
-                    obj[key] = item[key]
+                    if (item[key]) obj[key] = item[key]
                 }
                 return obj
             })
-            querySelect = selected
+            queryResults = [...selected]
 
             return this
         }
 
         static async then(res, rej) {
-            console.log("Called!")
-            // this.grabCollection()
-            // console.log(querySelect)
-            res(querySelect)
+            res(queryResults)
+            this.endQuery()
         }
 
         // Document methods
@@ -104,9 +93,7 @@ function createMockModel(collection = []) {
             for (const key in obj) {
                 this._id = this[key] = obj[key]
             }
-            // this.collection = collection
             this._id = uuidv4()
-            // console.log("Here I am", this)
         }
         save() {
             collection.push(this)
