@@ -4,13 +4,18 @@ class ModelMock {
             this[key] = obj[key]
         }
         this.collection = array
+        console.log("This is constructor array", array)
     }
     static async save() {
         this.collection.push(this)
         return this
     }
+    static sayHi() {
+        console.log("hello, world")
+        return
+    }
     static async findOne(filter) {
-        console.log(this.collection)
+        console.log("This is collection", this.collection)
         return (
             this.collection.find((item) => {
                 console.log(item)

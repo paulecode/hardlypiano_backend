@@ -27,6 +27,10 @@ const addPiece = (User) => async (userId, piece) => {
     return await user.save()
 }
 
+const testMethod = (User) => () => {
+    return User.sayHi()
+}
+
 const createUser =
     (User) =>
     async ({ username, password }) => {
@@ -58,5 +62,6 @@ module.exports = (User = UserModel) => {
         find: find(User),
         findOne: findOne(User),
         addPiece: addPiece(User),
+        testMethod: testMethod(User),
     }
 }
