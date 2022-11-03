@@ -1,3 +1,4 @@
+const { query } = require("express")
 const { v4: uuidv4 } = require("uuid")
 
 // class mockCollection {
@@ -29,6 +30,9 @@ const { v4: uuidv4 } = require("uuid")
 // }
 
 function createMockModel(collection = []) {
+    // let querySelect = [...collection]
+    let querySelect = []
+    let queryStarted = false
     return class {
         // currentCollection = collection
         // Model methods
@@ -44,35 +48,55 @@ function createMockModel(collection = []) {
         }
         static async findOne(filter) {
             const found =
-                collection.find((item) => {
+                querySelect.find((item) => {
                     for (const key in filter) {
                         if (filter[key] !== item[key]) return false
                     }
                     return true
                 }) || null
+            querySelect = found
             return found
         }
         static find(filter) {
-            const found = collection.filter((item) => {
+            if (!queryStarted) {
+                querySelect = [...collection]
+                queryStarted = true
+            }
+            console.log(queryStarted)
+            const found = querySelect.filter((item) => {
                 for (const key in filter) {
                     if (filter[key] !== item[key]) return false
                 }
                 return true
             })
-            return this(found)
+            querySelect = found
+            return this
         }
         static select(stringOfFields) {
+            if (!queryStarted) {
+                querySelect = [...collection]
+                queryStarted = true
+            }
+            console.log(queryStarted)
             const fields = stringOfFields.split(" ")
 
-            const selected = collection.map((item) => {
+            const selected = querySelect.map((item) => {
                 const obj = {}
                 for (const key of fields) {
                     obj[key] = item[key]
                 }
                 return obj
             })
+            querySelect = selected
 
-            return selected
+            return this
+        }
+
+        static async then(res, rej) {
+            console.log("Called!")
+            // this.grabCollection()
+            // console.log(querySelect)
+            res(querySelect)
         }
 
         // Document methods
