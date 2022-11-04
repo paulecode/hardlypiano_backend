@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid")
-const createMockModel = require("./mocks/createMockModel")
+const createMockModel = require("./utils/createMockModel")
 
 const users = []
 const User = createMockModel(users)
