@@ -90,11 +90,7 @@ function createMockModel(collection = []) {
             }
             return this
         }
-        #then = (res, rej) => {
-            if (num > 2) return res()
-            console.log("running", this)
-            num++
-
+        #then(res, rej) {
             res(this)
         }
     }

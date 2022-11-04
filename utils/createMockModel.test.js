@@ -3,6 +3,10 @@ const createMockModel = require("./createMockModel")
 describe("mock User model", () => {
     const User = createMockModel([])
 
+    beforeEach(async () => {
+        await User.remove({})
+    })
+
     describe("creating objects", () => {
         beforeEach(async () => {
             await User.remove({})
@@ -45,6 +49,49 @@ describe("mock User model", () => {
             await User.remove({ username: "foo" })
             const found = await User.find({})
             expect(found.length).toEqual(1)
+        })
+    })
+    describe("finding objects", () => {
+        beforeEach(async () => {
+            const beatles = [
+                {
+                    name: "Paul",
+                    instrument: "guitar",
+                },
+                {
+                    name: "Ringo",
+                    instrument: "drums",
+                },
+                {
+                    name: "George",
+                    instrument: "bass",
+                },
+                {
+                    name: "John",
+                    instrument: "vocals",
+                },
+            ]
+            beatles.forEach(async (beatle) => {
+                const document = new User({ ...beatle })
+                await document.save()
+            })
+        })
+        it("finds all documents in collection", async () => {
+            const found = await User.find({})
+            expect(found.length).toEqual(4)
+        })
+        it("finds documents by one property", async () => {
+            const found = await User.find({ name: "Paul" })
+            expect(found.length).toEqual(1)
+        })
+        it("returns empty array for no results", async () => {
+            const found = await User.find({ name: "Irakli" })
+            expect(found).toBeInstanceOf(Array)
+            expect(found.length).toEqual(0)
+        })
+        it("returns no documents on mixed properties", async () => {
+            const found = await User.find({ name: "Paul", instrument: "drums" })
+            expect(found.length).toEqual(0)
         })
     })
 })
