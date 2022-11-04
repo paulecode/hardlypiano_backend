@@ -30,15 +30,21 @@ describe("mock User model", () => {
     })
 
     describe("removing objects", () => {
-        it("removes all objects", async () => {
+        beforeEach(async () => {
             const user1 = new User({ username: "foo" })
             const user2 = new User({ username: "bar" })
             await user1.save()
             await user2.save()
-
+        })
+        it("removes all objects", async () => {
             await User.remove({})
             const found = await User.find({})
             expect(found.length).toEqual(0)
+        })
+        it("removes objects with a filter", async () => {
+            await User.remove({ username: "foo" })
+            const found = await User.find({})
+            expect(found.length).toEqual(1)
         })
     })
 })

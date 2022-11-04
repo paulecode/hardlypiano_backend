@@ -82,7 +82,12 @@ function createMockModel(collection = []) {
             this._id = uuidv4()
         }
         save() {
-            collection.push(this)
+            let found = collection.find((document) => document._id === this._id)
+            if (found) {
+                found = { ...this }
+            } else {
+                collection.push(this)
+            }
             return this
         }
         #then = (res, rej) => {
