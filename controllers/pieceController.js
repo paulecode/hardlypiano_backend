@@ -36,4 +36,22 @@ const get = async (req, res) => {
     }
 }
 
-module.exports = { getAll, create, get }
+const update = async (req, res) => {
+    const userId = req.user._id
+    const pieceId = req.params.id
+    const pieceDetails = req.body
+
+    try {
+        const piece = await pieceService.updatePiece(
+            userId,
+            pieceId,
+            pieceDetails
+        )
+        return res.status(200).send(piece)
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(e.message)
+    }
+}
+
+module.exports = { getAll, create, get, update }
