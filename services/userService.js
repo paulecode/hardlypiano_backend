@@ -47,6 +47,11 @@ const createUser =
         return await user.save()
     }
 
+const deleteUserById = (User) => async (userId) => {
+    const user = await User.findById(userId)
+    return await user.remove()
+}
+
 const deleteAll = (User) => async (username, password) => {
     return await User.deleteMany({})
 }
@@ -57,6 +62,7 @@ module.exports = (User = UserModel) => {
         getUsers: getUsers(User),
         createUser: createUser(User),
         deleteAll: deleteAll(User),
+        deleteUserById: deleteUserById(User),
         find: find(User),
         findOne: findOne(User),
         addPiece: addPiece(User),
