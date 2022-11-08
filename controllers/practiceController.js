@@ -11,7 +11,6 @@ const create = async (req, res) => {
     }
 
     try {
-        console.log("got here", practiceDetails, pieceId)
         const session = await PracticeService.addPracticeSession({
             pieceId,
             userId,

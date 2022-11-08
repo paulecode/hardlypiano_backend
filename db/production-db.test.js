@@ -1,8 +1,10 @@
-require("dotenv").config()
 const db = require("./production-db")
 const mongoose = require("mongoose")
 
 describe("connects to production db", () => {
+    beforeAll(async () => {
+        require("dotenv").config()
+    })
     afterEach(async () => {
         await db.close()
     })

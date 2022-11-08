@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt")
 const UserModel = require("../models/User.js")
 
 const getUsers = (User) => () => {
-    console.log("userService.getUsers called")
     return User.find({})
 }
 
@@ -34,7 +33,6 @@ const testMethod = (User) => () => {
 const createUser =
     (User) =>
     async ({ username, password }) => {
-        console.log(User)
         if (!username || !password) {
             throw new Error("Username or password not provided.")
             return

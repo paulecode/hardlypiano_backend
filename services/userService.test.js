@@ -1,19 +1,13 @@
 const UserServiceConstructor = require("./userService")
 const db = require("../db")
-const ModelMock = require("../mocks/userMock")
+const UserModel = require("../models/User")
 
 describe("creating Users with UserService", () => {
     let UserService
 
-    const users = []
-    class UserMock extends ModelMock {
-        constructor(obj) {
-            super(obj, users)
-        }
-    }
-
     beforeAll(async () => {
-        UserService = UserServiceConstructor(UserMock)
+        UserService = UserServiceConstructor(UserModel)
+        await db.connect()
     })
 
     it("creates a User with username and password", async () => {
