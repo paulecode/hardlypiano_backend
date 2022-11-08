@@ -10,6 +10,14 @@ describe("creating Users with UserService", () => {
         await db.connect()
     })
 
+    beforeEach(async () => {
+        await db.clear()
+    })
+
+    afterAll(async () => {
+        await db.close()
+    })
+
     it("creates a User with username and password", async () => {
         const username = "foo"
         const password = "bar"

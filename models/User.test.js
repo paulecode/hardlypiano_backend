@@ -93,4 +93,16 @@ describe("model User is defined and functional", () => {
         expect(saved.username).toBeDefined()
         expect(saved.email).not.toBeDefined()
     })
+    it("model accepts custom id from request", async () => {
+        const mongoose = require("mongoose")
+        const customId = new mongoose.Types.ObjectId(12345)
+
+        const user = new User({
+            username: "foo",
+            password: "bar",
+            _id: customId,
+        })
+        const saved = await user.save()
+        expect(saved._id).toEqual(customId)
+    })
 })
