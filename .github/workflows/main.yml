@@ -6,30 +6,29 @@ name: Node.js CI
 on: pull_request
 
 jobs:
-  build:
+    build:
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16.x]
+                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: ifconfig
-    - run: |
-          touch .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
-          echo MONGODB_PROD_URI=${{ secrets.MONGODB_PROD_URI }} >> .env
-          echo TOKEN_SECRET=${{ secrets.TOKEN_SECRET }} >> .env
-          cat .env
-#     - run: npm run build --if-present
-    - run: npm run test
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+            - run: npm ci
+            # - run: ifconfig
+            - run: |
+                  touch .env
+                  echo PORT=${{ secrets.PORT }} >> .env
+                  echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+                  echo MONGODB_PROD_URI=${{ secrets.MONGODB_PROD_URI }} >> .env
+                  echo TOKEN_SECRET=${{ secrets.TOKEN_SECRET }} >> .env
+                  cat .env
+            #     - run: npm run build --if-present
+            - run: npm run test
