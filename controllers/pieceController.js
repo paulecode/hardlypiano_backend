@@ -12,6 +12,18 @@ const getAll = async (req, res) => {
     }
 }
 
+const get = async (req, res) => {
+    const userId = req.user._id
+    const pieceId = req.params.id
+
+    try {
+        const piece = await pieceService.getPieceById(userId, pieceId)
+        return res.status(200).send(piece)
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+}
+
 const create = async (req, res) => {
     const userId = req.user._id
     const pieceDetails = req.body
@@ -24,13 +36,34 @@ const create = async (req, res) => {
     }
 }
 
-const get = async (req, res) => {
+const deleteOne = async (req, res) => {
+    console.log("got here")
     const userId = req.user._id
     const pieceId = req.params.id
 
     try {
-        const piece = await pieceService.getPieceById(userId, pieceId)
-        return res.status(200).send(piece)
+        await pieceService.deletePiece(userId, pieceId)
+        return res.status(200).send({ message: "Piece successfully deleted." })
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+}
+
+const deleteMany = async (req, res) => {
+    const userId = req.user._id
+    const { pieceIds } = req.body
+
+    if (!pieceIds || pieceIds.length === 0)
+        return res.status(400).send("Bad request: pieceIds not provided.")
+
+    try {
+        const deletedCount = await pieceService.deleteManyPieces(
+            userId,
+            pieceIds
+        )
+        return res
+            .status(200)
+            .send({ message: `${deletedCount} pieces successfully deleted` })
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -54,4 +87,4 @@ const update = async (req, res) => {
     }
 }
 
-module.exports = { getAll, create, get, update }
+module.exports = { getAll, create, get, update, deleteOne, deleteMany }

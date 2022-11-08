@@ -47,8 +47,8 @@ const createUser =
         return await user.save()
     }
 
-const deleteAll = (User) => (username, password) => {
-    return User.deleteMany({})
+const deleteAll = (User) => async (username, password) => {
+    return await User.deleteMany({})
 }
 
 module.exports = (User = UserModel) => {
