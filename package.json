@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "dev": "NODE_ENV=development nodemon -r dotenv/config server.js",
-        "prod": "NODE_ENV=production nodemon -r dotenv/config server.js",
+        "prod": "NODE_ENV=production node server.js",
+        "prod:test": "NODE_ENV=production node -r dotenv/config server.js",
         "test": "jest --detectOpenHandles",
         "test:watch": "jest --watch --detectOpenHandles --forceExit"
     },
