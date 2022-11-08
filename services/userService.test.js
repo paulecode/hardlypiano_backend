@@ -61,4 +61,15 @@ describe("UserService functions", () => {
             expect(after).toEqual(null)
         })
     })
+    describe("UserService.deleteAll", () => {
+        it("deletes all users", async () => {
+            const before = await UserService.find({})
+            expect(before.length).not.toEqual(0)
+
+            await UserService.deleteAll()
+
+            const after = await UserService.find({})
+            expect(after.length).toEqual(0)
+        })
+    })
 })
