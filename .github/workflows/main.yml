@@ -23,10 +23,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - run: ifconfig
     - run: |
           touch .env
           echo PORT=${{ secrets.PORT }} >> .env
-          echo DATABASE_URL=${{ secrets.MONGODB_URI }} >> .env
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+          echo MONGODB_PROD_URI=${{ secrets.MONGODB_PROD_URI }} >> .env
           echo TOKEN_SECRET=${{ secrets.TOKEN_SECRET }} >> .env
           cat .env
 #     - run: npm run build --if-present
