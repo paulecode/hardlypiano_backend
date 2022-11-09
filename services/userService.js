@@ -46,6 +46,20 @@ const createUser =
         return await user.save()
     }
 
+const generateFakeUser = (User) => async () => {
+    const crypto = require("crypto")
+    const username = crypto.randomBytes(8).toString("base64")
+    const password = crypto.randomBytes(8).toString("base64")
+
+    try {
+        const user = await createUser(User)({ username, password })
+        return user
+    } catch (e) {
+        if (e.message !== "Username already in use.") return e
+        return generateFakeUser(User)()
+    }
+}
+
 const deleteUserById = (User) => async (userId) => {
     const user = await User.findById(userId)
     return await user.remove()
@@ -66,5 +80,6 @@ module.exports = (User = UserModel) => {
         findOne: findOne(User),
         addPiece: addPiece(User),
         testMethod: testMethod(User),
+        generateFakeUser: generateFakeUser(User),
     }
 }

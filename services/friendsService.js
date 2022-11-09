@@ -73,6 +73,20 @@ const createFriendsService = (User = UserModel) => {
         await user.save()
         await enemy.save()
     }
+
+    FriendsService.removeFriendRequest = async (userId, senderId) => {
+        const user = await User.findById(userId)
+        const sender = await User.findById(senderId)
+
+        user.friends.incomingRequests = user.friends.incomingRequests.filter(
+            (friendRequestId) => friendRequestId !== senderId
+        )
+        sender.friends.outgoingRequests = user.friends.outgoingRequests.filter(
+            (friendRequestId) => friendRequestId !== userId
+        )
+        await user.save()
+        await sender.save()
+    }
     return FriendsService
 }
 
