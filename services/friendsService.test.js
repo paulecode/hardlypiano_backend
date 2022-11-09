@@ -129,4 +129,45 @@ describe("FriendService tests", () => {
             expect(users[2].friends.active.length).toEqual(2)
         })
     })
+    describe("FriendsService.removeFriend", () => {
+        it("is defined", () => {
+            expect(FriendsService.acceptAllFriendRequests).toBeDefined()
+        })
+        it("removes an existing friend", async () => {
+            await FriendsService.sendFriendRequest(users[0]._id, users[2]._id)
+            await FriendsService.acceptFriendRequest(users[1]._id, users[0]._id)
+
+            await FriendsService.removeFriend(users[0]._id, users[1]._id)
+            await refresh()
+
+            expect(users[0].friends.active.length).toEqual(0)
+            expect(users[1].friends.active.length).toEqual(0)
+        })
+    })
+    describe("FriendsService.removeFriendRequest", () => {
+        it("is defined", () => {
+            expect(FriendsService.removeFriendRequest).toBeDefined()
+        })
+        it("removes a pending friend request, by the receiver", async () => {
+            await FriendsService.sendFriendRequest(users[0]._id, users[1]._id)
+            await FriendsService.removeFriendRequest(users[1]._id, users[0]._id)
+            await refresh()
+
+            expect(users[0].friends.outgoingRequests.length).toEqual(0)
+            expect(users[1].friends.incomingRequests.length).toEqual(0)
+        })
+    })
+    describe("FriendsService.cancelFriendRequest", () => {
+        it("is defined", () => {
+            expect(FriendsService.cancelFriendRequest).toBeDefined()
+        })
+        it("cancels a pending friend request, by the sender", async () => {
+            await FriendsService.sendFriendRequest(users[0]._id, users[1]._id)
+            await FriendsService.cancelFriendRequest(users[0]._id, users[1]._id)
+            await refresh()
+
+            expect(users[0].friends.outgoingRequests.length).toEqual(0)
+            expect(users[1].friends.incomingRequests.length).toEqual(0)
+        })
+    })
 })
