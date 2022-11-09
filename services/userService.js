@@ -79,6 +79,7 @@ const sendFriendRequest = (User) => async (fromUserId, toUserId) => {
 
 const acceptFriendRequest = (User) => async (userId, friendId) => {
     console.log("FRIENDSHIP TIME")
+    console.log("TYPES???", typeof friendId, friendId)
 
     const user = await User.findById(userId)
     if (!user.friends.incomingRequests.includes(friendId)) {
@@ -104,6 +105,19 @@ const acceptFriendRequest = (User) => async (userId, friendId) => {
     return newFriend
 }
 
+const removeFriend = (User) => async (userId, enemyId) => {
+    const user = await User.findById(userId)
+    user.friends.active = user.friends.active.filter(
+        (friendId) => friendId.toString() !== enemyId.toString()
+    )
+    const enemy = await User.findById(enemyId)
+    enemy.friends.active = enemy.friends.active.filter(
+        (friendId) => friendId.toString() !== userId.toString()
+    )
+    await user.save()
+    await enemy.save()
+}
+
 module.exports = (User = UserModel) => {
     return {
         getUserById: getUserById(User),
@@ -117,5 +131,6 @@ module.exports = (User = UserModel) => {
         testMethod: testMethod(User),
         sendFriendRequest: sendFriendRequest(User),
         acceptFriendRequest: acceptFriendRequest(User),
+        removeFriend: removeFriend(User),
     }
 }
