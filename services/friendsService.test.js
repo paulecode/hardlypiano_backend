@@ -134,7 +134,7 @@ describe("FriendService tests", () => {
             expect(FriendsService.acceptAllFriendRequests).toBeDefined()
         })
         it("removes an existing friend", async () => {
-            await FriendsService.sendFriendRequest(users[0]._id, users[2]._id)
+            await FriendsService.sendFriendRequest(users[0]._id, users[1]._id)
             await FriendsService.acceptFriendRequest(users[1]._id, users[0]._id)
 
             await FriendsService.removeFriend(users[0]._id, users[1]._id)

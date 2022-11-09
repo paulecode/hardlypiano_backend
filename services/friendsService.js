@@ -91,10 +91,12 @@ const createFriendsService = (User = UserModel) => {
         const sender = await User.findById(senderId)
 
         user.friends.incomingRequests = user.friends.incomingRequests.filter(
-            (friendRequestId) => friendRequestId !== senderId
+            (friendRequestId) =>
+                friendRequestId.toString() !== senderId.toString()
         )
         sender.friends.outgoingRequests = user.friends.outgoingRequests.filter(
-            (friendRequestId) => friendRequestId !== userId
+            (friendRequestId) =>
+                friendRequestId.toString() !== userId.toString()
         )
         await user.save()
         await sender.save()
@@ -104,10 +106,12 @@ const createFriendsService = (User = UserModel) => {
         const sender = await User.findById(senderId)
 
         user.friends.outgoingRequests = user.friends.outgoingRequests.filter(
-            (friendRequestId) => friendRequestId !== senderId
+            (friendRequestId) =>
+                friendRequestId.toString() !== senderId.toString()
         )
         sender.friends.incomingRequests = user.friends.incomingRequests.filter(
-            (friendRequestId) => friendRequestId !== userId
+            (friendRequestId) =>
+                friendRequestId.toString() !== userId.toString()
         )
         await user.save()
         await sender.save()
