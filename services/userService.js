@@ -1,6 +1,4 @@
-const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const mongoose = require("mongoose")
 
 const UserModel = require("../models/User.js")
 
@@ -11,18 +9,6 @@ const getUsers = (User) => () => {
 const getUserById = (User) => async (userId) => {
     if (!userId) throw new Error("No userId provided.")
     return await User.findById(userId)
-}
-
-const getFriendsOfUser = (User) => async (userId) => {
-    const user = await User.findById(userId).populate("friends.active")
-    const friends = user.friends.active.map((friend) => {
-        return {
-            _id: friend._id,
-            username: friend.username,
-        }
-    })
-
-    return friends
 }
 
 const find = (User) => async (filters) => {
@@ -69,64 +55,6 @@ const deleteAll = (User) => async (username, password) => {
     return await User.deleteMany({})
 }
 
-const sendFriendRequest = (User) => async (fromUserId, toUserId) => {
-    const sender = await User.findById(fromUserId)
-    const receiver = await User.findById(toUserId)
-
-    if (receiver.friends.incomingRequests.includes(sender._id)) {
-        throw new Error("Friend request already pending.")
-    }
-
-    if (sender.friends.incomingRequests.includes(receiver._id)) {
-        acceptFriendRequest(User)(sender._id, receiver._id)
-        return
-    }
-
-    sender.friends.outgoingRequests.push(receiver._id)
-    receiver.friends.incomingRequests.push(sender._id)
-
-    await sender.save()
-    await receiver.save()
-}
-
-const acceptFriendRequest = (User) => async (userId, friendId) => {
-    const user = await User.findById(userId)
-    if (!user.friends.incomingRequests.includes(friendId)) {
-        throw new Error("UserID was not found in incoming requests.")
-    }
-
-    // TODO: clean up
-    user.friends.active.push(friendId)
-    user.friends.incomingRequests = user.friends.incomingRequests.filter(
-        (req) => {
-            return req.toString() !== friendId.toString()
-        }
-    )
-    await user.save()
-
-    const newFriend = await User.findById(friendId)
-    newFriend.friends.active.push(userId)
-    newFriend.friends.outgoingRequests = user.friends.incomingRequests.filter(
-        (req) => req.toString() !== userId.toString()
-    )
-    await newFriend.save()
-
-    return newFriend
-}
-
-const removeFriend = (User) => async (userId, enemyId) => {
-    const user = await User.findById(userId)
-    user.friends.active = user.friends.active.filter(
-        (friendId) => friendId.toString() !== enemyId.toString()
-    )
-    const enemy = await User.findById(enemyId)
-    enemy.friends.active = enemy.friends.active.filter(
-        (friendId) => friendId.toString() !== userId.toString()
-    )
-    await user.save()
-    await enemy.save()
-}
-
 module.exports = (User = UserModel) => {
     return {
         getUserById: getUserById(User),
@@ -138,9 +66,5 @@ module.exports = (User = UserModel) => {
         findOne: findOne(User),
         addPiece: addPiece(User),
         testMethod: testMethod(User),
-        sendFriendRequest: sendFriendRequest(User),
-        acceptFriendRequest: acceptFriendRequest(User),
-        removeFriend: removeFriend(User),
-        getFriendsOfUser: getFriendsOfUser(User),
     }
 }
