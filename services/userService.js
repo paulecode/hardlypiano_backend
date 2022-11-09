@@ -46,9 +46,10 @@ const createUser =
         return await user.save()
     }
 
-const generateFakeUser = (User) => async () => {
+const generateFakeUser = (User) => async (givenUsername) => {
     const crypto = require("crypto")
-    const username = crypto.randomBytes(8).toString("base64")
+
+    const username = givenUsername || crypto.randomBytes(8).toString("base64")
     const password = crypto.randomBytes(8).toString("base64")
 
     try {

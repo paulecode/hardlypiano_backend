@@ -24,8 +24,10 @@ const createFriendsService = (User = UserModel) => {
         }
 
         if (sender.friends.incomingRequests.includes(receiver._id)) {
-            acceptFriendRequest(User)(sender._id, receiver._id)
-            return
+            return await FriendsService.acceptFriendRequest(
+                sender._id,
+                receiver._id
+            )
         }
 
         sender.friends.outgoingRequests.push(receiver._id)
@@ -53,12 +55,22 @@ const createFriendsService = (User = UserModel) => {
         const newFriend = await User.findById(friendId)
         newFriend.friends.active.push(userId)
         newFriend.friends.outgoingRequests =
-            user.friends.incomingRequests.filter(
+            newFriend.friends.outgoingRequests.filter(
                 (req) => req.toString() !== userId.toString()
             )
         await newFriend.save()
 
         return newFriend
+    }
+
+    FriendsService.acceptAllFriendRequests = async (userId) => {
+        const user = await User.findById(userId)
+        const { incomingRequests } = user.friends
+
+        for (const friendId of incomingRequests) {
+            await FriendsService.acceptFriendRequest(userId, friendId)
+        }
+        return
     }
 
     FriendsService.removeFriend = async (userId, enemyId) => {
