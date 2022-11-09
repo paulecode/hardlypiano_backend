@@ -65,6 +65,56 @@ const updatePiece =
         return piece
     }
 
+const deletePiece = (Piece, UserService) => async (userId, pieceId) => {
+    if (!userId) throw new Error("User not provided.")
+
+    const user = await UserService.getUserById(userId)
+    if (!user) throw new Error("User not found.")
+
+    await user.pieces.id(pieceId).remove()
+    await user.save()
+
+    return
+}
+
+const deleteManyPieces = (Piece, UserService) => async (userId, pieceIds) => {
+    if (!userId) throw new Error("User not provided.")
+
+    const user = await UserService.getUserById(userId)
+    if (!user) throw new Error("User not found.")
+
+    let count = 0
+
+    await Promise.all(
+        pieceIds.map((pieceId) => {
+            const piece = user.pieces.id(pieceId)
+            if (piece) {
+                count++
+                return user.pieces.id(pieceId).remove()
+            }
+            return
+        })
+    )
+    await user.save()
+
+    return count
+}
+
+const deleteAllPieces = (Piece, UserService) => async (userId, pieceIds) => {
+    if (!userId) throw new Error("User not provided.")
+
+    const user = await UserService.getUserById(userId)
+    if (!user) throw new Error("User not found.")
+
+    const pieces = await getPieces(Piece, UserService)(userId)
+
+    let count = pieces.length
+
+    user.pieces = []
+    await user.save()
+    return count
+}
+
 module.exports = (Piece = PieceModel, UserService = userService) => {
     return {
         getPieces: getPieces(Piece, UserService),
@@ -72,5 +122,8 @@ module.exports = (Piece = PieceModel, UserService = userService) => {
         createPiece: createPiece(Piece, UserService),
         addPracticeToPiece: addPracticeToPiece(Piece, UserService),
         updatePiece: updatePiece(Piece, UserService),
+        deletePiece: deletePiece(Piece, UserService),
+        deleteManyPieces: deleteManyPieces(Piece, UserService),
+        deleteAllPieces: deleteAllPieces(Piece, UserService),
     }
 }

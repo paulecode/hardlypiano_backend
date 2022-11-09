@@ -15,5 +15,7 @@ router.get("/:id", pieceController.get)
 router.patch("/:id", pieceController.update)
 router.post("/:pieceId/practice", practiceController.create)
 router.post("/", pieceController.create)
+router.delete("/:id", pieceController.deleteOne)
+router.delete("/", pieceController.deleteMany)
 
 module.exports = { path, router }
