@@ -13,6 +13,18 @@ const getUserById = (User) => async (userId) => {
     return await User.findById(userId)
 }
 
+const getFriendsOfUser = (User) => async (userId) => {
+    const user = await User.findById(userId).populate("friends.active")
+    const friends = user.friends.active.map((friend) => {
+        return {
+            _id: friend._id,
+            username: friend.username,
+        }
+    })
+
+    return friends
+}
+
 const find = (User) => async (filters) => {
     return await User.find(filters)
 }
@@ -78,9 +90,6 @@ const sendFriendRequest = (User) => async (fromUserId, toUserId) => {
 }
 
 const acceptFriendRequest = (User) => async (userId, friendId) => {
-    console.log("FRIENDSHIP TIME")
-    console.log("TYPES???", typeof friendId, friendId)
-
     const user = await User.findById(userId)
     if (!user.friends.incomingRequests.includes(friendId)) {
         throw new Error("UserID was not found in incoming requests.")
@@ -132,5 +141,6 @@ module.exports = (User = UserModel) => {
         sendFriendRequest: sendFriendRequest(User),
         acceptFriendRequest: acceptFriendRequest(User),
         removeFriend: removeFriend(User),
+        getFriendsOfUser: getFriendsOfUser(User),
     }
 }
