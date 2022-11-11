@@ -3,8 +3,12 @@ const db = require("../db")
 const request = require("supertest")
 
 describe("makes successful API call", () => {
+    const OLD_ENV = process.env
+
     beforeAll(async () => {
         await db.connect()
+        process.env = { ...OLD_ENV }
+        process.env.TOKEN_SECRET = "12345"
     })
     beforeEach(async () => {
         if (!db.connected()) {
@@ -13,6 +17,7 @@ describe("makes successful API call", () => {
     })
     afterAll(async () => {
         await db.close()
+        process.env = OLD_ENV
     })
 
     describe("GET /", () => {
@@ -69,6 +74,39 @@ describe("makes successful API call", () => {
                     .post("/auth/login")
                     .send({ ...user, password: "baz" })
                 expect(response.statusCode).not.toEqual(200)
+            })
+        })
+    })
+    describe("/users", () => {
+        let user = {
+            username: "foo",
+            password: "bar",
+        }
+        let userId
+        let authToken
+        beforeAll(async () => {
+            const response = await request(app).post("/auth/login").send(user)
+            userId = response.body.id
+            authToken = response.headers["auth-token"]
+            console.log(authToken)
+        })
+        describe("GET /", () => {
+            it("is defined", async () => {
+                const response = await request(app).get("/users").send()
+                expect(response.statusCode).not.toEqual(404)
+            })
+            it("requires authentication", async () => {
+                const response = await request(app).get("/users").send()
+                expect(response.statusCode).toEqual(401)
+            })
+            it("if authenticated, returns with user object", async () => {
+                const response = await request(app)
+                    .get("/users")
+                    .set("Auth-Token", authToken)
+                    .send()
+                console.log(response.error)
+                expect(response.statusCode).toEqual(200)
+                expect(response.body.data.user).toBeDefined()
             })
         })
     })
