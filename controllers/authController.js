@@ -8,33 +8,15 @@ async function register(req, res) {
 
     try {
         const user = await userService.createUser({ username, password })
-        res.status(200).send(user)
+        res.status(200).send({
+            data: {
+                username,
+                userId: user._id,
+            },
+        })
     } catch (e) {
         res.status(400).send(e.message)
     }
-
-    // if (!username || !password)
-    // 	return res
-    // 		.status(400)
-    // 		.send('Bad request. Username and/or password not provided.');
-
-    // const foundUser = await userService.findOne({ username });
-    // if (foundUser) {
-    // 	return res.status(409).send('Bad request. Username already in use.');
-    // }
-
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(password, salt);
-
-    // try {
-    // 	const user = await userService.createUser({
-    // 		username: username,
-    // 		password: hashedPassword,
-    // 	});
-    // 	res.status(201).send({ message: 'user successfully registered', user });
-    // } catch (e) {
-    // 	res.status(400).send(e.message);
-    // }
 }
 
 async function login(req, res) {
@@ -48,7 +30,10 @@ async function login(req, res) {
     const validPassword = await bcrypt.compare(password, user.password)
     if (!validPassword) return res.status(400).send("Invalid password.")
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
+    const tokenSecret =
+        process.env.NODE_ENV === "test" ? "12345" : process.env.TOKEN_SECRET
+
+    const token = jwt.sign({ _id: user._id }, tokenSecret)
     return res.header("Auth-Token", token).send({ id: user._id, token })
 }
 
