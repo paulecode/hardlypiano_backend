@@ -22,7 +22,10 @@ describe("UserService functions", () => {
         expect(user).toBeDefined()
     })
 
-    describe("UserService.create", () => {
+    describe("UserService.createUser", () => {
+        it("is defined", () => {
+            expect(UserService.createUser).toBeDefined()
+        })
         it("created user is saved to the database", async () => {
             const found = await User.findOne({ username: "foo" })
             expect(found.username).toEqual(user.username)
@@ -37,7 +40,34 @@ describe("UserService functions", () => {
             }).rejects.toThrow()
         })
     })
+    describe("UserService.find", () => {
+        it("is defined", () => {
+            expect(UserService.findOne).toBeDefined()
+        })
+        it("gets all users, returns array", async () => {
+            await UserService.createUser({ username: "paul", password: "foo" })
+            await UserService.createUser({
+                username: "james",
+                password: "bar",
+            })
+            const found = await UserService.find()
+            expect(found).toBeInstanceOf(Array)
+            expect(found.length).toBeGreaterThan(0)
+        })
+        it("filters by field", async () => {
+            const found = await UserService.find({ username: "james" })
+            expect(found.length).toEqual(1)
+        })
+        it("returns an empty array when no results", async () => {
+            const found = await UserService.find({ username: "kanye" })
+            expect(found).toBeInstanceOf(Array)
+            expect(found.length).toEqual(0)
+        })
+    })
     describe("UserService.findOne", () => {
+        it("is defined", () => {
+            expect(UserService.findOne).toBeDefined()
+        })
         it("finds a user with a username", async () => {
             const found = await UserService.findOne({ username: "foo" })
             expect(found._id).toBeDefined()
@@ -48,6 +78,9 @@ describe("UserService functions", () => {
         })
     })
     describe("UserService.deleteUserById", () => {
+        it("is defined", () => {
+            expect(UserService.deleteUserById).toBeDefined()
+        })
         it("creates and deletes a user", async () => {
             const user2 = await UserService.createUser({
                 username: "irakli",
@@ -62,6 +95,9 @@ describe("UserService functions", () => {
         })
     })
     describe("UserService.deleteAll", () => {
+        it("is defined", () => {
+            expect(UserService.deleteUserById).toBeDefined()
+        })
         it("deletes all users", async () => {
             const before = await UserService.find({})
             expect(before.length).not.toEqual(0)
