@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
 
     try {
         const pieces = await pieceService.getPieces(userId)
-        return res.status(200).send(pieces)
+        return res.status(200).send({ data: pieces })
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -18,7 +18,7 @@ const get = async (req, res) => {
 
     try {
         const piece = await pieceService.getPieceById(userId, pieceId)
-        return res.status(200).send(piece)
+        return res.status(200).send({ data: piece })
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -29,8 +29,8 @@ const create = async (req, res) => {
     const pieceDetails = req.body
 
     try {
-        const pieces = await pieceService.createPiece(userId, pieceDetails)
-        return res.status(200).send(pieces)
+        const piece = await pieceService.createPiece(userId, pieceDetails)
+        return res.status(200).send({ data: piece })
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -80,7 +80,7 @@ const update = async (req, res) => {
             pieceId,
             pieceDetails
         )
-        return res.status(200).send(piece)
+        return res.status(200).send({ data: piece })
     } catch (e) {
         console.log(e)
         res.status(400).send(e.message)

@@ -4,7 +4,7 @@ module.exports = () => {
             return [
                 {
                     title: "Nocturne",
-                    composeer: "Chopin",
+                    composer: "Chopin",
                 },
                 {
                     title: "Moonlight Sonata",
@@ -16,13 +16,13 @@ module.exports = () => {
         getPieceById: () => {
             return {
                 title: "Nocturne",
-                composeer: "Chopin",
+                composer: "Chopin",
             }
         },
         deletePiece: () => {
             return {
                 title: "Nocturne",
-                composeer: "Chopin",
+                composer: "Chopin",
             }
         },
     }

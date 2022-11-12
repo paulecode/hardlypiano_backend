@@ -135,6 +135,7 @@ describe("makes successful API call", () => {
                     .set("Auth-Token", authToken)
                     .send()
                 const { data } = response.body
+                console.log("ayyyy", data)
                 expect(data).toBeDefined()
                 expect(data.title).toBeDefined()
                 expect(data.composer).toBeDefined()
