@@ -34,12 +34,14 @@ const createUser =
     (User) =>
     async ({ username, password }) => {
         if (!username || !password) {
-            throw new Error("Username or password not provided.")
-            return
+            const error = new Error("Username or password not provided.")
+            error.statusCode = 400
+            throw error
         }
         if (await User.findOne({ username })) {
-            throw new Error("Username already in use.")
-            return
+            const error = new Error("Username already in use.")
+            error.statusCode = 403
+            throw error
         }
         const salt = await bcrypt.genSalt(10)
         const hashed = await bcrypt.hash(password, salt)

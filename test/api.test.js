@@ -56,6 +56,7 @@ describe("makes successful API call", () => {
                     .post("/auth/register")
                     .send()
                 expect(response.statusCode).not.toEqual(200)
+                expect(response.body.message).toBeDefined()
             })
             it("throws an error if fields for invalid types", async () => {
                 const response = await request(app)
@@ -67,7 +68,7 @@ describe("makes successful API call", () => {
                 const response = await request(app)
                     .post("/auth/register")
                     .send(user)
-                expect(response.statusCode).not.toEqual(200)
+                expect(response.statusCode).toEqual(403)
             })
         })
         describe("POST /login", () => {
@@ -176,5 +177,12 @@ describe("makes successful API call", () => {
             })
         })
         describe("DELETE /:id", () => {})
+    })
+    describe("error handling", () => {
+        it("returns a 404 and a message on an invalid path", async () => {
+            const response = await request(app).get("/fakePath").send()
+            expect(response.statusCode).toEqual(400)
+            expect(response.message).toBeDefined()
+        })
     })
 })

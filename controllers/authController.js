@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 
 const userService = require("../services/userService")()
 
-async function register(req, res) {
+async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
@@ -15,11 +15,11 @@ async function register(req, res) {
             },
         })
     } catch (e) {
-        res.status(400).send(e.message)
+        next(e)
     }
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
     const { username, password } = req.body
     if (!username || !password)
         return res.status(400).send("Bad request. Missing fields")

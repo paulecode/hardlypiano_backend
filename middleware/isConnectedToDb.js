@@ -1,9 +1,11 @@
 const db = require("../db")
 const isConnectedToDb = (res, req, next) => {
-    if (!db.connected())
-        res.status(500).send(
-            "Internal server error. Not connected to database."
-        )
+    if (!db.connected()) {
+        const message = "Internal server error. Not connected to database"
+        const err = new Error(message)
+        err.statusCode = 500
+        throw err
+    }
     next()
 }
 module.exports = isConnectedToDb

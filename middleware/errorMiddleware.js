@@ -6,7 +6,8 @@ errorMiddleware.log = (err, req, res, next) => {
 }
 
 errorMiddleware.sendError = (err, req, res, next) => {
-    const { statusCode, message } = error
+    const statusCode = err.statusCode || 400
+    const message = err.message || "Error not specified."
     const errorResponse = {
         message,
     }
