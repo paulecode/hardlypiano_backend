@@ -12,7 +12,11 @@ module.exports = () => {
                 },
             ]
         },
-        createPiece: () => {},
+        createPiece: (userId, pieceDetails) => {
+            return {
+                ...pieceDetails,
+            }
+        },
         getPieceById: () => {
             return {
                 title: "Nocturne",

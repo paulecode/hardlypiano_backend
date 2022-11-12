@@ -146,6 +146,22 @@ describe("makes successful API call", () => {
                 const response = await request(app).post("/pieces").send()
                 expect(response.statusCode).toEqual(401)
             })
+            it("saves a piece to the database and returns it in response", async () => {
+                const piece = {
+                    title: "Nocturne",
+                    composoer: "Chopin",
+                }
+                const response = await request(app)
+                    .post("/pieces")
+                    .set("Auth-Token", authToken)
+                    .send(piece)
+
+                expect(response.status).toEqual(200)
+
+                const { data } = response.body
+                expect(data.title).toEqual(piece.title)
+                expect(data.composer).toEqual(piece.composer)
+            })
         })
         describe("DELETE /", () => {
             it("requires authentication", async () => {
