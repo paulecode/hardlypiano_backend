@@ -2,9 +2,17 @@ const app = require("../app")
 const db = require("../db")
 const request = require("supertest")
 
-describe("makes successful API call", () => {
-    const OLD_ENV = process.env
+jest.mock("../services/pieceService")
 
+describe("makes successful API call", () => {
+    let user = {
+        username: "foo",
+        password: "bar",
+    }
+    let authToken
+    let userId
+
+    const OLD_ENV = process.env
     beforeAll(async () => {
         await db.connect()
         process.env = { ...OLD_ENV }
@@ -20,19 +28,21 @@ describe("makes successful API call", () => {
         process.env = OLD_ENV
     })
 
-    describe("GET /", () => {
-        it("returns hello, world", async () => {
-            const response = await request(app).get("/")
-            expect(response.text).toBeDefined()
-            expect(response.text).toEqual("Hello World!")
+    describe("/ ---------------", () => {
+        describe("GET /", () => {
+            it("returns hello, world", async () => {
+                const response = await request(app).get("/")
+                expect(response.text).toBeDefined()
+                expect(response.text).toEqual("Hello World!")
+            })
+            it("returns an error if no db connection", async () => {
+                await db.close()
+                const response = await request(app).get("/")
+                expect(response.status).toEqual(500)
+            })
         })
     })
-    describe("/auth", () => {
-        let user = {
-            username: "foo",
-            password: "bar",
-        }
-        let authToken
+    describe("/auth ---------------", () => {
         describe("POST /register", () => {
             it("successfully registers a user", async () => {
                 const response = await request(app)
@@ -77,18 +87,11 @@ describe("makes successful API call", () => {
             })
         })
     })
-    describe("/users", () => {
-        let user = {
-            username: "foo",
-            password: "bar",
-        }
-        let userId
-        let authToken
+    describe("/users ---------------", () => {
         beforeAll(async () => {
             const response = await request(app).post("/auth/login").send(user)
             userId = response.body.id
             authToken = response.headers["auth-token"]
-            console.log(authToken)
         })
         describe("GET /", () => {
             it("is defined", async () => {
@@ -99,15 +102,63 @@ describe("makes successful API call", () => {
                 const response = await request(app).get("/users").send()
                 expect(response.statusCode).toEqual(401)
             })
-            it("if authenticated, returns with user object", async () => {
+            it("returns with user object", async () => {
                 const response = await request(app)
                     .get("/users")
                     .set("Auth-Token", authToken)
                     .send()
-                console.log(response.error)
                 expect(response.statusCode).toEqual(200)
-                expect(response.body.data.user).toBeDefined()
+                expect(response.body.username).toBeDefined()
             })
         })
+    })
+    describe("/pieces ---------------", () => {
+        describe("GET /", () => {
+            it("requires authentication", async () => {
+                const response = await request(app).get("/pieces").send()
+                expect(response.statusCode).toEqual(401)
+            })
+            it("returns an array of pieces", async () => {
+                const response = await request(app)
+                    .get("/pieces")
+                    .set("Auth-Token", authToken)
+                    .send()
+                expect(response.statusCode).toEqual(200)
+                const { data } = response.body
+                expect(data).toBeInstanceOf(Array)
+            })
+        })
+        describe("GET /pieces/:id", () => {
+            it("returns a piece by id", async () => {
+                const response = await request(app)
+                    .get("/pieces/12345")
+                    .set("Auth-Token", authToken)
+                    .send()
+                const { data } = response.body
+                expect(data).toBeDefined()
+                expect(data.title).toBeDefined()
+                expect(data.composer).toBeDefined()
+            })
+        })
+        describe("POST /", () => {
+            it("requires authentication", async () => {
+                const response = await request(app).post("/pieces").send()
+                expect(response.statusCode).toEqual(401)
+            })
+        })
+        describe("DELETE /", () => {
+            it("requires authentication", async () => {
+                const response = await request(app).delete("/pieces").send()
+                expect(response.statusCode).toEqual(401)
+            })
+            it("expects json in request body", async () => {
+                const response = await request(app)
+                    .delete("/pieces")
+                    .set("Auth-Token", "12345")
+                    .send()
+                expect(response.statusCode).not.toEqual(200)
+            })
+        })
+        describe("DELETE /:id", () => {})
     })
 })
