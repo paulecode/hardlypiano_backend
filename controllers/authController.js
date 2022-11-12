@@ -21,14 +21,28 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
     const { username, password } = req.body
-    if (!username || !password)
-        return res.status(400).send("Bad request. Missing fields")
+    if (!username || !password) {
+        const err = new Error("Bad request. Missing fields.")
+        err.statusCode = 400
+        next(err)
+        return
+    }
 
     const user = await userService.findOne({ username })
-    if (!user) return res.status(409).send("Username not found.")
+    if (!user) {
+        const err = new Error("Username not found.")
+        err.statusCode = 409
+        next(err)
+        return
+    }
 
     const validPassword = await bcrypt.compare(password, user.password)
-    if (!validPassword) return res.status(400).send("Invalid password.")
+    if (!validPassword) {
+        const err = new Error("Invalid password.")
+        err.statusCode = 400
+        next(err)
+        return
+    }
 
     const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
     return res.header("Auth-Token", token).send({ id: user._id, token })

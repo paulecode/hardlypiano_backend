@@ -1,5 +1,12 @@
 const errorMiddleware = {}
 
+errorMiddleware.notFound = (req, res, next) => {
+    console.log("DOES THIS GET INVOKED")
+    const err = new Error("Not found.")
+    err.statusCode = 404
+    next(err)
+}
+
 errorMiddleware.log = (err, req, res, next) => {
     console.log(err.statusCode, err.message || "Error not specified.")
     next(err)

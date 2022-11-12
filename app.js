@@ -15,6 +15,7 @@ appUtils.importRoutes(app)
 
 // Error handling
 const errorMiddleware = require("./middleware/errorMiddleware")
+app.use(errorMiddleware.notFound)
 app.use(errorMiddleware.log)
 app.use(errorMiddleware.sendError)
 

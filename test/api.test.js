@@ -39,6 +39,7 @@ describe("makes successful API call", () => {
                 await db.close()
                 const response = await request(app).get("/")
                 expect(response.status).toEqual(500)
+                expect(response.body.message).toBeDefined()
             })
         })
     })
@@ -63,12 +64,14 @@ describe("makes successful API call", () => {
                     .post("/auth/register")
                     .send({ username: 123, password: [1, 2, 3] })
                 expect(response.statusCode).not.toEqual(200)
+                expect(response.body.message).toBeDefined()
             })
             it("returns an error if username already taken", async () => {
                 const response = await request(app)
                     .post("/auth/register")
                     .send(user)
                 expect(response.statusCode).toEqual(403)
+                expect(response.body.message).toBeDefined()
             })
         })
         describe("POST /login", () => {
@@ -84,7 +87,9 @@ describe("makes successful API call", () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send({ ...user, password: "baz" })
+                // console.log("AYYYYY", response.body)
                 expect(response.statusCode).not.toEqual(200)
+                expect(response.body.message).toBeDefined()
             })
         })
     })
@@ -181,8 +186,8 @@ describe("makes successful API call", () => {
     describe("error handling", () => {
         it("returns a 404 and a message on an invalid path", async () => {
             const response = await request(app).get("/fakePath").send()
-            expect(response.statusCode).toEqual(400)
-            expect(response.message).toBeDefined()
+            expect(response.statusCode).toEqual(404)
+            expect(response.body.message).toBeDefined()
         })
     })
 })
