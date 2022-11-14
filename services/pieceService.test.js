@@ -130,13 +130,19 @@ describe("PieceService functions", () => {
             })
         })
         describe("PieceService.updatePiece", () => {
+            let savedPieces
+            let piece
+
+            beforeEach(async () => {
+                savedPieces = await PieceService.getPieces(userId)
+                piece = savedPieces[0]
+            })
             it("is defined", () => {
                 expect(PieceService.updatePiece).toBeDefined()
             })
+
             it("edits and saves a piece in place", async () => {
-                const savedPieces = await PieceService.getPieces(userId)
                 const before = savedPieces.length
-                const piece = savedPieces[0]
 
                 await PieceService.updatePiece(userId, piece._id, {
                     composer: "Irakli",
@@ -151,6 +157,71 @@ describe("PieceService functions", () => {
                 const after = updatedPieces.length
 
                 expect(before).toEqual(after)
+            })
+            it("edits and saves a piece in place with same details", async () => {
+                await PieceService.updatePiece(userId, piece._id, piece)
+                const updatedPiece = await PieceService.getPieceById(
+                    userId,
+                    piece._id
+                )
+
+                expect(updatedPiece.title).toEqual(piece.title)
+                expect(updatedPiece.composer).toEqual(piece.composer)
+            })
+            it("doesn't save a piece with a missing required field", async () => {
+                const pieceDetails = {
+                    composer: "",
+                }
+
+                expect(
+                    async () =>
+                        await PieceService.updatePiece(
+                            userId,
+                            piece._id,
+                            piedeDetails
+                        )
+                ).rejects.toThrow()
+
+                const foundPiece = await PieceService.getPieceById(
+                    userId,
+                    piece._id
+                )
+                expect(foundPiece.title).toEqual(piece.title)
+            })
+            it("doesn't save a piece with wrong data types", async () => {
+                const pieceDetails = {
+                    title: 1234,
+                    composer: [1, 2, 3, 4],
+                }
+                expect(
+                    async () =>
+                        await PieceService.updatePiece(
+                            userId,
+                            piece._id,
+                            pieceDetails
+                        )
+                ).rejects.toThrow()
+
+                const foundPiece = await PieceService.getPieceById(
+                    userId,
+                    piece._id
+                )
+                expect(foundPiece.title).toEqual(piece.title)
+            })
+            it("adds an extra field and retains old ones", async () => {
+                const extra = {
+                    metadata: {
+                        keySignature: "B#",
+                    },
+                }
+                const updatedPiece = await PieceService.updatePiece(
+                    userId,
+                    piece._id,
+                    extra
+                )
+                expect(updatedPiece.title).toBeDefined()
+                expect(updatedPiece.composer).toBeDefined()
+                expect(updatedPiece.metadata.keySignature).toBeDefined()
             })
         })
         describe("PieceService.deleteAllPieces", () => {

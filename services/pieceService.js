@@ -54,10 +54,10 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         if (!user) throw new Error("User not found.")
 
         const piece = user.pieces.id(pieceId)
+        // console.log({ ...pieceDetails })
         piece.set({ ...pieceDetails })
-        await piece.save()
 
-        const saved = await user.save()
+        await user.save()
 
         return piece
     }
