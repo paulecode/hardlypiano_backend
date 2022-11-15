@@ -12,6 +12,9 @@ Modules covered: **SE_22 Web Backend Technologies**
 
 ## Project structure
 
+![placeholder-name](.//img/placeholder.jpg)
+[Diagram of routes, controllers, services, models]
+
 ### Routes
 
 ### Controllers

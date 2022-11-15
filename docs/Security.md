@@ -8,7 +8,7 @@ Modules covered: **SE_09 Cyber Security**
 
 ## Threat model
 
-### Important threats
+![placeholder-name](.//img/placeholder.jpg)
 
 ## Security measures
 
