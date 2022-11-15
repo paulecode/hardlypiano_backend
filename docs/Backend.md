@@ -22,6 +22,21 @@ The server is broken down into multiple layers, each responsible for one aspect 
 
 The routes files define the different routes and endpoints of our application. Each file exports an instance of an Express router, as well as a `path` property. These are automatically imported by the custom `importRoutes` function in the `appUtils.js` file upon server start.
 
+```js
+// routes/users.js
+
+const router = express.Router()
+const path = "/users"
+const isAuthenticated = require("../middleware/isAuthenticated")
+const userController = require("../controllers/userController")
+
+router.get("/", isAuthenticated, userController.get)
+router.delete("/", isAuthenticated, userController.deleteAllUsers)
+router.get("/all", userController.getAll)
+
+module.exports = { path, router }
+```
+
 Each endpoint is defined with a particular method of an appropriate controller which will handle the request and send a response. Some routes import additional middleware, such as `isAuthenticated`, that are only supposed to be used in some endpoints.
 
 ### Controllers
