@@ -6,7 +6,9 @@ Detailed documentation of integration and deployment pipeline.
 
 Modules covered: **SE_22 Web Backend Technologies**
 
-## Server overview
+## Team overview
+
+❗ Responsibilities/ownership of different parts. Have to refer to specific commits.
 
 ---
 

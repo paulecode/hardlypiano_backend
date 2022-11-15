@@ -2,9 +2,9 @@
 
 [project background, information, team members, backend structure]
 
-Link to live server:
+[❗ Link to live server (use with Postman)](#)
 
-Link to Swift app repo:
+[❗ Link to Swift app repo](#)
 
 ---
 
@@ -32,17 +32,14 @@ Link to Swift app repo:
 
 [Overview of project structure and REST API]
 
-[For detailed explanation and SE_06 -> link to Backend doc]
-
----
+**SE_22 Web Backend Technologies**  
+For a detailed look into the Node server and REST API, visit the [Backend documentation](./docs/Backend.md).
 
 ### Server structure
 
 [Describe the use of node + express]
 
 [Overview of routes, controllers, routes]
-
----
 
 ### REST API
 
@@ -51,7 +48,9 @@ Link to Swift app repo:
 
 [Overview of endpoints, such as `users`, `auth`, `pieces`]
 
-[For a full documentation, check out Postman]
+Visit the [API Documentation](#postman) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
+
+---
 
 ## Database
 
@@ -60,7 +59,8 @@ Link to Swift app repo:
 
 [Describe the use of MongoDB and mongoose as ORM (???)]
 
-[For detailed explanation and SE_06 -> link to Database doc]
+**SE_06 NoSQL Databases**  
+For a detailed look into the MongoDB database, please visit the [Database documentation](./docs/Database.md)
 
 ---
 
@@ -69,7 +69,8 @@ Link to Swift app repo:
 ![placeholder-name](./docs/img/placeholder.jpg)
 [🖼 Deployment/pipeline diagram]
 
-[For detailed explanation and SE_23 CI/CD -> link to CI/CD doc]
+**SE_23 CI/CD**  
+For a detailed look into the deployment pipeline, please visit the [CI/CD documentation](./docs/CICD.md)
 
 ---
 
@@ -87,8 +88,13 @@ Link to Swift app repo:
 
 [Overview of threat model and briefly mentioning the different components in which measures were taken]
 
-[For detailed explanation and SE_09 Cyber Security -> link to Security doc]
+**SE_09 Cyber Security**  
+For a detailed look into security threats, security measures and considerations, please visit the [Security documentation](./docs/Security.md)
 
 ---
 
 ## Demo video
+
+Here is a screen recording of the iOS app interacting with the backend:
+
+[❗ Upload video here](#)
