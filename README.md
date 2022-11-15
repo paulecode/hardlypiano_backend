@@ -28,27 +28,10 @@
 
 ## Node + Express Backend
 
-![placeholder-name](./docs/img/placeholder.jpg)
-
-[Overview of project structure and REST API]
+[Basic overview of project structure and REST API]
 
 **SE_22 Web Backend Technologies**  
-For a detailed look into the Node server and REST API, visit the [Backend documentation](./docs/Backend.md).
-
-### Server structure
-
-[Describe the use of node + express]
-
-[Overview of routes, controllers, routes]
-
-### REST API
-
-![placeholder-name](./docs/img/placeholder.jpg)
-[🖼 Diagram of how a request flows from user to server and back]
-
-[Overview of endpoints, such as `users`, `auth`, `pieces`]
-
-Visit the [API Documentation](#postman) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
+For a detailed look into the Node server and REST API, please visit the [Backend documentation](./docs/Backend.md).
 
 ---
 
@@ -57,7 +40,7 @@ Visit the [API Documentation](#postman) for full details of each endpoint, and e
 ![placeholder-name](./docs/img/placeholder.jpg)
 [🖼 Database model diagram]
 
-[Describe the use of MongoDB and mongoose as ORM (???)]
+[Describe the use of MongoDB as database, mongoose as ODM and MongoDB Atlas as hosting]
 
 **SE_06 NoSQL Databases**  
 For a detailed look into the MongoDB database, please visit the [Database documentation](./docs/Database.md)
@@ -69,6 +52,8 @@ For a detailed look into the MongoDB database, please visit the [Database docume
 ![placeholder-name](./docs/img/placeholder.jpg)
 [🖼 Deployment/pipeline diagram]
 
+[Basic description of AWS hosting, deployment pipeline]
+
 **SE_23 CI/CD**  
 For a detailed look into the deployment pipeline, please visit the [CI/CD documentation](./docs/CICD.md)
 
@@ -77,7 +62,6 @@ For a detailed look into the deployment pipeline, please visit the [CI/CD docume
 ## Automated testing
 
 [For detailed explanation of unit and integration testing]
-[For detailed explanation and SE_10 Automated Testing -> link to CI/CD doc]
 
 ---
 

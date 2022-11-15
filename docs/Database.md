@@ -8,6 +8,10 @@ Related modules: **SE_06 NoSQL Databases**
 
 ---
 
+## Relation vs NoSQL database
+
+---
+
 ## Database model
 
 ![placeholder-name](.//img/placeholder.jpg)

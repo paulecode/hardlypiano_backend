@@ -14,7 +14,7 @@ Modules covered: **SE_22 Web Backend Technologies**
 
 ## Project structure
 
-![placeholder-name](.//img/placeholder.jpg)
+![placeholder-name](./img/placeholder.jpg)
 [Diagram of routes, controllers, services, models]
 
 ### Routes
@@ -45,8 +45,11 @@ Modules covered: **SE_22 Web Backend Technologies**
 
 ## REST API
 
-[description of endpoints, examples of some]
+![placeholder-name](./img/placeholder.jpg)
+[🖼 Diagram of how a request flows from user to server and back]
 
-[full documentation in Postman]
+[Overview of endpoints, such as `users`, `auth`, `pieces`]
+
+Visit the [API Documentation](#postman) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
 
 ---
