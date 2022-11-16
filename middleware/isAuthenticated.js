@@ -5,11 +5,9 @@ const isAuthenticated = (req, res, next) => {
 
     try {
         const verified = jwt.verify(token, process.env.TOKEN_SECRET)
-        // console.log("RETURNING THIS", verified)
         req.user = verified
         next()
     } catch (e) {
-        // console.log(e.message)
         res.status(400).send("Access denied. Invalid token.")
     }
 }
