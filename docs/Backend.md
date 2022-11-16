@@ -8,7 +8,7 @@ The development team comprises of Paul Ebert and Irakli Goderdzishvili. Both con
 
 | Topic                        | Team member | Example commits |
 | ---------------------------- | ----------- | --------------- |
-| UserService, PieceService    | Irakli      |                 |
+| UserService, PieceService    | Irakli      | #missing        |
 | AuthService, PracticeService | Paul        |                 |
 | Integration and deployment   | Paul        |                 |
 | Testing infrastructure       | Irakli      |                 |
@@ -254,6 +254,6 @@ Our REST API is comprised of a few routes and endpoints.
 -   `/pieces` — for getting and posting musical pieces
 -   `/pieces/:id/practice` — for logging practice sessions
 
-Visit the [API Documentation](#) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
+Visit the [API Documentation](#missing) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
 
 ---

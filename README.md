@@ -2,9 +2,9 @@
 
 [project background, information, team members, backend structure]
 
-[❗ Link to live server (use with Postman)](#)
+[❗ Link to live server (use with Postman)](#missing)
 
-[❗ Link to Swift app repo](#)
+[❗ Link to Swift app repo](#missing)
 
 ---
 
@@ -81,4 +81,4 @@ For a detailed look into security threats, security measures and considerations,
 
 Here is a screen recording of the iOS app interacting with the backend:
 
-[❗ Upload video here](#)
+[❗ Upload video here](#missing)
