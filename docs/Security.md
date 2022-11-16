@@ -52,9 +52,11 @@ Currently, we don’t have defined roles in our application, so the extent of Au
 
 This middleware ensures that a valid JWT is provided when a request tries to read or write private user data.
 
-### `isFriend` middleware
+#### `isFriend` middleware
 
-There is little authorization. There is one middleware that checks for "isFriend" to display more details about user.
+This middleware ensures that two users are active friends when one user tries to read another user’s data.
+
+As the application grows, user permissions will be more strictly managed using the [Access Control Module](#missing) and adhering to the principle of least privilege.
 
 ---
 
@@ -89,6 +91,10 @@ To prevent Cross-Site Request Forgery attacks, the server would generate cryptog
 
 [CORS](#missing) is enabled in the Node application, in order to only allow requests from the Swift app and Vue.js web-app (which have different origins).
 
+#### Planned: HSTS
+
+We currently don't have an SSL certificate (more on that below). Once we configure HTTPS, we plan to enforce the [HTTPS Strict Transport Security](#missing) policy to protect against man-in-the-middle attacks.
+
 #### Sanitizing inputs
 
 [node sanitize](#missing) is used to sanitize user input in request queries and bodies. This prevents potentially malicious input from attempting NoSQL injections to the database.
@@ -99,7 +105,7 @@ Currently, none of our endpoints use query parameters as input. However, for fut
 
 #### Auditing packages
 
-npm audit is run periodically to keep track of security vulnerabilities in our package dependencies. As a general rule, we try not to import too many npm packages, especially for trivial tasks.
+`npm audit` is run periodically to keep track of security vulnerabilities in our package dependencies. As a general rule, we try not to import too many npm packages, especially for trivial tasks.
 
 #### Server too busy
 

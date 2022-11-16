@@ -67,13 +67,15 @@ For a detailed look into the deployment pipeline, please visit the [CI/CD docume
 
 ## Cyber Security
 
+Here is the threat model for our application:
+
 ![placeholder-name](./docs/img/placeholder.jpg)
 [🖼 Threat model]
 
-[Overview of threat model and briefly mentioning the different components in which measures were taken]
+We have taken a list of security measurements in the different aspects of our app, such as password encryption, input sanitation, user authorization, and more.
 
 **SE_09 Cyber Security**  
-For a detailed look into security threats, security measures and considerations, please visit the [Security documentation](./docs/Security.md)
+For a detailed look into security threats, security measures and considerations, please visit the [Security documentation](./docs/Security.md).
 
 ---
 
