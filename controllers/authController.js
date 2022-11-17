@@ -35,7 +35,7 @@ async function login(req, res, next) {
 
     try {
         const user = await UserService.findOne({ username })
-        const token = await AuthService.attemptLogin(username, password)
+        const token = await AuthService.attemptLogin(user, password)
         return res
             .status(200)
             .header("Auth-Token", token)
@@ -74,8 +74,6 @@ async function changePassword(req, res, next) {
     const hashed = await AuthService.hashPassword(newPassword)
     user.password = hashed
     await user.save()
-    // await userService.updateProperty(user)
-    //what do i return here?
     return res.status(200).send("Password changed successfully.")
 }
 

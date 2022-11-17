@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const UserService = require("./userService")()
 
 const createAuthService = () => {
     const AuthService = {}
-    const secret = process.env.SECRET || "12345"
+    const secret = process.env.TOKEN_SECRET || "12345"
+    const tokenExpiration = process.env.NODE_ENV === "test" ? "5s" : "15m"
 
     AuthService.hashPassword = async (password) => {
         if (!password) throw new Error("Password not provided.")
@@ -25,9 +25,10 @@ const createAuthService = () => {
     AuthService.generateToken = (payload) => {
         if (!payload) throw new Error("Payload not provided")
 
-        const token = jwt.sign(payload, secret)
+        const token = jwt.sign(payload, secret, { expiresIn: tokenExpiration })
         return token
     }
+
     AuthService.verifyToken = (token) => {
         if (!token) throw new Error("Token not provided.")
         try {
@@ -37,11 +38,9 @@ const createAuthService = () => {
             throw new Error("Invalid token.")
         }
     }
-    AuthService.attemptLogin = async (username, password) => {
-        try {
-            const user = await UserService.findOne({ username })
-            if (!user) throw new Error("1")
 
+    AuthService.attemptLogin = async (user, password) => {
+        try {
             const hash = user.password
             const valid = await AuthService.isPasswordCorrect(password, hash)
             if (!valid) throw new Error("2")
@@ -52,8 +51,6 @@ const createAuthService = () => {
             throw new Error("Login failed. Invalid credentials.")
         }
     }
-    AuthService.loginAndReturnToken = () => {}
-    AuthService.validateLogin = () => {}
 
     return AuthService
 }
