@@ -81,18 +81,91 @@ describe("makes successful API call", () => {
                     .send(user)
                 expect(response.statusCode).toEqual(200)
                 expect(response.headers["auth-token"]).toBeDefined()
-                authToken = response.headers["auth-token"]
+            })
+            xit("successfully logs in a user and receives a refresh token", async () => {
+                const response = await request(app)
+                    .post("/auth/login")
+                    .send(user)
+                expect(response.statusCode).toEqual(200)
+                const { token, refreshToken } = response.body
+                expect(refreshToken).toBeDefined()
+                expect(refreshToken).not.toEqual(token)
             })
             it("returns an error for wrong credentials", async () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send({ ...user, password: "baz" })
-                // console.log("AYYYYY", response.body)
                 expect(response.statusCode).not.toEqual(200)
                 expect(response.body.message).toBeDefined()
             })
+            xit("returns an error for expired token", async (done) => {
+                jest.setTimeout(10000)
+
+                const response = await request(app)
+                    .post("/auth/login")
+                    .send(user)
+                const { token } = response.body
+
+                setTimeout(async () => {
+                    const response = await request(app)
+                        .get("/users")
+                        .set("Auth-Token", token)
+                        .send()
+                    expect(response.statusCode).not.toEqual(200)
+                    console.log(response.message)
+                    done()
+                }, 6000)
+            })
+        })
+        describe("POST /changepassword", () => {
+            it("successfully changes the password of a user", async () => {
+                const response = await request(app)
+                    .post("/auth/changepassword")
+                    .send({
+                        username: "foo",
+                        password: "bar",
+                        newPassword: "newpassword",
+                    })
+                expect(response.statusCode).toEqual(200)
+            })
+            it("Successfully logs in with new password", async () => {
+                const response = await request(app).post("/auth/login").send({
+                    username: "foo",
+                    password: "newpassword",
+                })
+                expect(response.statusCode).toEqual(200)
+            })
+            it("returns an error for a wrong password", async () => {
+                const response = await request(app)
+                    .post("/auth/changepassword")
+                    .send({
+                        username: "foo",
+                        password: "bar",
+                        newPassword: "baaa",
+                    })
+                expect(response.statusCode).not.toEqual(200)
+                expect(response.statusCode).toEqual(400)
+            })
+            it("returns an error for a wrong username", async () => {
+                const response = await request(app)
+                    .post("/auth/changepassword")
+                    .send({
+                        username: "fool",
+                        password: "bar",
+                    })
+                expect(response.statusCode).not.toEqual(200)
+                expect(response.statusCode).toEqual(400)
+            })
+            afterAll(async () => {
+                await request(app).post("/auth/changepassword").send({
+                    username: "foo",
+                    password: "newpassword",
+                    newPassword: "bar",
+                })
+            })
         })
     })
+
     describe("/users ---------------", () => {
         beforeAll(async () => {
             const response = await request(app).post("/auth/login").send(user)
@@ -156,6 +229,7 @@ describe("makes successful API call", () => {
                     title: "Nocturne",
                     composoer: "Chopin",
                 }
+                //spellcheck
                 const response = await request(app)
                     .post("/pieces")
                     .set("Auth-Token", authToken)

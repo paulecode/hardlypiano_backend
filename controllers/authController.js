@@ -1,13 +1,27 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
-const userService = require("../services/userService")()
+const UserService = require("../services/userService")()
+const AuthService = require("../services/authService")()
 
 async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
-        const user = await userService.createUser({ username, password })
+        if (process.env.NODE_ENV === "production") {
+            const owaspTest = AuthService.checkPasswordStrength(password)
+            if (!owaspTest.strong) {
+                const { errors } = owaspTest
+                console.log(errors)
+                res.status(400).send({ errors })
+                return
+            }
+        }
+        const hashed = await AuthService.hashPassword(password)
+        const user = await UserService.createUser({
+            username,
+            password: hashed,
+        })
         res.status(200).send({
             data: {
                 username,
@@ -28,7 +42,30 @@ async function login(req, res, next) {
         return
     }
 
-    const user = await userService.findOne({ username })
+    try {
+        const user = await UserService.findOne({ username })
+        const token = await AuthService.attemptLogin(user, password)
+        return res
+            .status(200)
+            .header("Auth-Token", token)
+            .send({ id: user._id, token })
+    } catch (e) {
+        const err = new Error("Login failed. Invalid credentials.")
+        err.statusCode = 409
+        next(e)
+    }
+}
+
+async function changePassword(req, res, next) {
+    const { username, password, newPassword } = req.body
+    if (!username || !password || !newPassword) {
+        const err = new Error("Bad request. Missing fields.")
+        res.statusCode = 400
+        next(err)
+        return
+    }
+
+    const user = await UserService.findOne({ username })
     if (!user) {
         const err = new Error("Username not found.")
         err.statusCode = 409
@@ -36,16 +73,17 @@ async function login(req, res, next) {
         return
     }
 
-    const validPassword = await bcrypt.compare(password, user.password)
-    if (!validPassword) {
+    const isValid = await AuthService.isPasswordCorrect(password, user.password)
+    if (!isValid) {
         const err = new Error("Invalid password.")
         err.statusCode = 400
-        next(err)
-        return
+        return next(err)
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-    return res.header("Auth-Token", token).send({ id: user._id, token })
+    const hashed = await AuthService.hashPassword(newPassword)
+    user.password = hashed
+    await user.save()
+    return res.status(200).send("Password changed successfully.")
 }
 
-module.exports = { register, login }
+module.exports = { register, login, changePassword }
