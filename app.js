@@ -9,7 +9,7 @@ const toobusy = require("toobusy-js")
 const hpp = require("hpp")
 
 // Security
-app.use((res, req, next) => {
+app.use((req, res, next) => {
     if (toobusy()) res.send(503, "Server too busy")
     else next()
 })
