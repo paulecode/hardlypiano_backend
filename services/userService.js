@@ -44,6 +44,25 @@ const createUser =
             error.statusCode = 403
             throw error
         }
+        if (username.length < 3) {
+            const error = new Error(
+                "Username must be at least 3 characters long."
+            )
+            error.statusCode = 400
+            throw error
+        }
+        if (username.length > 16) {
+            const error = new Error(
+                "Username can't be longer than 16 characters."
+            )
+            error.statusCode = 400
+            throw error
+        }
+        if (username.includes(" ")) {
+            const error = new Error("Username can't contain whitespace.")
+            error.statusCode = 400
+            throw error
+        }
         const salt = await bcrypt.genSalt(10)
         const hashed = await bcrypt.hash(password, salt)
         const user = new User({ username, password: hashed })

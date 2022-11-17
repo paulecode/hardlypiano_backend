@@ -57,6 +57,33 @@ describe("UserService functions", () => {
                 const user = await UserService.createUser(uppercasedFooUser)
             }).rejects.toThrow()
         })
+        it("Does not allow a username to be shorter than 3 characters", async () => {
+            const shortUsername = {
+                username: "fo",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(shortUsername)
+            }).rejects.toThrow()
+        })
+        it("Does not allow a username to be longer than 16 characters", async () => {
+            const longUsername = {
+                username: "chalidaasawakanjanakit",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(longUsername)
+            }).rejects.toThrow()
+        })
+        it("Does not allow a username to contain spaces", async () => {
+            const spaceUsername = {
+                username: "Paul Ebert",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(spaceUsername)
+            }).rejects.toThrow()
+        })
     })
     describe("UserService.find", () => {
         it("is defined", () => {
