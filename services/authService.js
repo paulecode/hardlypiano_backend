@@ -39,12 +39,12 @@ const createAuthService = () => {
     }
     AuthService.attemptLogin = async (username, password) => {
         try {
-            const user = await userService.findOne({ username })
-            if (!user) throw new Error()
+            const user = await UserService.findOne({ username })
+            if (!user) throw new Error("1")
 
             const hash = user.password
             const valid = await AuthService.isPasswordCorrect(password, hash)
-            if (!valid) throw new Error()
+            if (!valid) throw new Error("2")
 
             const token = AuthService.generateToken({ _id: user.id })
             return token

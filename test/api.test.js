@@ -43,7 +43,7 @@ describe("makes successful API call", () => {
             })
         })
     })
-    describe.only("/auth ---------------", () => {
+    describe("/auth ---------------", () => {
         describe("POST /register", () => {
             it("successfully registers a user", async () => {
                 const response = await request(app)
@@ -79,6 +79,7 @@ describe("makes successful API call", () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send(user)
+                console.log(response.body.message)
                 expect(response.statusCode).toEqual(200)
                 expect(response.headers["auth-token"]).toBeDefined()
                 authToken = response.headers["auth-token"]

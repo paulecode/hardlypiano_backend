@@ -1,15 +1,15 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
-const userService = require("../services/userService")()
+const UserService = require("../services/userService")()
 const AuthService = require("../services/authService")()
 
 async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
-        const hashed = await AuthService.hashPassword(hashed)
-        const user = await userService.createUser({
+        const hashed = await AuthService.hashPassword(password)
+        const user = await UserService.createUser({
             username,
             password: hashed,
         })
@@ -20,6 +20,7 @@ async function register(req, res, next) {
             },
         })
     } catch (e) {
+        // console.log(e)
         next(e)
     }
 }
@@ -34,33 +35,19 @@ async function login(req, res, next) {
     }
 
     try {
+        const user = await UserService.findOne({ username })
+        if (!user) throw new Error()
+
         const token = await AuthService.attemptLogin(username, password)
-        return res.header("Auth-Token", token).send({ id: user._id, token })
+        return res
+            .status(200)
+            .header("Auth-Token", token)
+            .send({ id: user._id, token })
     } catch (e) {
+        const loginError = new Error("Login failed. Invalid credentials.")
+        loginError.statusCode = 409
         next(e)
     }
-
-    // const user = await userService.findOne({ username })
-    // if (!user) {
-    //     const err = new Error("Username not found.")
-    //     err.statusCode = 409
-    //     next(err)
-    //     return
-    // }
-
-    // try {
-    //     const token = await AuthService.attemptLogin(user, password)
-    //     return res.header("Auth-Token", token).send({ id: user._id, token })
-    // }
-
-    // const isValid = await AuthService.isPasswordCorrect(password, user.password)
-    // if (!isValid) {
-    //     const err = new Error("Invalid password.")
-    //     err.statusCode = 400
-    //     return next(err)
-    // }
-
-    // const token = AuthService.generateToken({ _id: user.id })
 }
 
 async function changePassword(req, res, next) {
@@ -72,7 +59,7 @@ async function changePassword(req, res, next) {
         return
     }
 
-    const user = await userService.findOne({ username })
+    const user = await UserService.findOne({ username })
     if (!user) {
         const err = new Error("Username not found.")
         err.statusCode = 409
