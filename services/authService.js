@@ -19,7 +19,13 @@ const createAuthService = () => {
         const isPasswordCorrect = await bcrypt.compare(password, hash)
         return isPasswordCorrect
     }
-    AuthService.generateToken = () => {}
+    AuthService.generateToken = (payload) => {
+        if (!payload) throw new Error("Payload not provided")
+
+        const secret = process.env.SECRET || "12345"
+        const token = jwt.sign(payload, secret)
+        return token
+    }
     AuthService.validateToken = () => {}
     AuthService.loginAndReturnToken = () => {}
     AuthService.validateLogin = () => {}

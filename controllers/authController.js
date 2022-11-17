@@ -44,7 +44,8 @@ async function login(req, res, next) {
         return next(err)
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
+    const token = AuthService.generateToken({ _id: user.id })
+
     return res.header("Auth-Token", token).send({ id: user._id, token })
 }
 

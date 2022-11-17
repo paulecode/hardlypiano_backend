@@ -67,6 +67,11 @@ describe("AuthService.js", () => {
         it("is defined", () => {
             expect(AuthService.generateToken).toBeDefined()
         })
+        it("returns a token from an input", () => {
+            const token = AuthService.generateToken({ name: "Irakli" })
+            expect(token).toBeDefined()
+            console.log(token)
+        })
     })
     describe("AuthService.validateToken", () => {
         it("is defined", () => {
