@@ -84,6 +84,15 @@ describe("UserService functions", () => {
                 const user = await UserService.createUser(spaceUsername)
             }).rejects.toThrow()
         })
+        it("does not allow non alphanumeric usernames to sign up.", async () => {
+            const nonAlphaNumUser = {
+                username: "JoeyBad.A$$",
+                password: "foobar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(nonAlphaNumUser)
+            }).rejects.toThrow()
+        })
     })
     describe("UserService.find", () => {
         it("is defined", () => {

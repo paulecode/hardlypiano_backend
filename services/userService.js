@@ -63,6 +63,15 @@ const createUser =
             error.statusCode = 400
             throw error
         }
+        const alphanumRegex = /^[A-Za-z0-9]+$/
+        if (!alphanumRegex.test(username)) {
+            const error = new Error(
+                "Username cannot contain special characters."
+            )
+            error.statusCode = 400
+            throw error
+        }
+
         const salt = await bcrypt.genSalt(10)
         const hashed = await bcrypt.hash(password, salt)
         const user = new User({ username, password: hashed })
