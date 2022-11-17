@@ -87,7 +87,6 @@ describe("makes successful API call", () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send({ ...user, password: "baz" })
-                // console.log("AYYYYY", response.body)
                 expect(response.statusCode).not.toEqual(200)
                 expect(response.body.message).toBeDefined()
             })
