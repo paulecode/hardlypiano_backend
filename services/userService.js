@@ -30,6 +30,30 @@ const testMethod = (User) => () => {
     return User.sayHi()
 }
 
+const validateUsername = (username) => {
+    if (username.length < 3) {
+        const error = new Error("Username must be at least 3 characters long.")
+        error.statusCode = 400
+        throw error
+    }
+    if (username.length > 16) {
+        const error = new Error("Username can't be longer than 16 characters.")
+        error.statusCode = 400
+        throw error
+    }
+    if (username.includes(" ")) {
+        const error = new Error("Username can't contain whitespace.")
+        error.statusCode = 400
+        throw error
+    }
+    const alphanumRegex = /^[A-Za-z0-9]+$/
+    if (!alphanumRegex.test(username)) {
+        const error = new Error("Username cannot contain special characters.")
+        error.statusCode = 400
+        throw error
+    }
+    return true
+}
 const createUser =
     (User) =>
     async ({ username, password }) => {
@@ -38,38 +62,18 @@ const createUser =
             error.statusCode = 400
             throw error
         }
+
         username = username.toLowerCase()
+
         if (await User.findOne({ username })) {
             const error = new Error("Username already in use.")
             error.statusCode = 403
             throw error
         }
-        if (username.length < 3) {
-            const error = new Error(
-                "Username must be at least 3 characters long."
-            )
-            error.statusCode = 400
-            throw error
-        }
-        if (username.length > 16) {
-            const error = new Error(
-                "Username can't be longer than 16 characters."
-            )
-            error.statusCode = 400
-            throw error
-        }
-        if (username.includes(" ")) {
-            const error = new Error("Username can't contain whitespace.")
-            error.statusCode = 400
-            throw error
-        }
-        const alphanumRegex = /^[A-Za-z0-9]+$/
-        if (!alphanumRegex.test(username)) {
-            const error = new Error(
-                "Username cannot contain special characters."
-            )
-            error.statusCode = 400
-            throw error
+        try {
+            validateUsername(username)
+        } catch (e) {
+            throw e
         }
 
         const salt = await bcrypt.genSalt(10)
