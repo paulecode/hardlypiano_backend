@@ -48,4 +48,38 @@ async function login(req, res, next) {
     return res.header("Auth-Token", token).send({ id: user._id, token })
 }
 
-module.exports = { register, login }
+async function changePassword(req, res, next) {
+    const { username, password, newPassword } = req.body
+    if (!username || !password || !newPassword) {
+        const err = new Error("Bad request. Missing fields.")
+        res.statusCode = 400
+        next(err)
+        return
+    }
+
+    const user = await userService.findOne({ username })
+    if (!user) {
+        const err = new Error("Username not found.")
+        err.statusCode = 409
+        next(err)
+        return
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password)
+    if (!validPassword) {
+        const err = new Error("Invalid password.")
+        err.statusCode = 400
+        next(err)
+        return
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(newPassword, salt)
+    user.password = hashedPassword
+    await user.save()
+    // await userService.updateProperty(user)
+    //what do i return here?
+    return res.status(200).send("Password changed successfully.")
+}
+
+module.exports = { register, login, changePassword }
