@@ -57,7 +57,7 @@ async function changePassword(req, res, next) {
         return
     }
 
-    const user = User.findOne({ username })
+    const user = await userService.findOne({ username })
     if (!user) {
         const err = new Error("Username not found.")
         err.statusCode = 409
@@ -73,8 +73,11 @@ async function changePassword(req, res, next) {
         return
     }
 
-    user.password = await bcrypt.hash(newPassword, 10)
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(newPassword, salt)
+    user.password = hashedPassword
     //what do i return here?
+    return res.status(200).send("Password changed successfully.")
 }
 
-module.exports = { register, login }
+module.exports = { register, login, changePassword }

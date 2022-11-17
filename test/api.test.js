@@ -92,7 +92,20 @@ describe("makes successful API call", () => {
                 expect(response.body.message).toBeDefined()
             })
         })
+        describe("POST /changepassword", () => {
+            it("successfully changes the password of a user", async () => {
+                const response = await request(app)
+                    .post("/auth/changepassword")
+                    .send({
+                        username: "foo",
+                        password: "bar",
+                        newPassword: "baa",
+                    })
+                expect(response.statusCode).toEqual(200)
+            })
+        })
     })
+
     describe("/users ---------------", () => {
         beforeAll(async () => {
             const response = await request(app).post("/auth/login").send(user)
@@ -156,6 +169,7 @@ describe("makes successful API call", () => {
                     title: "Nocturne",
                     composoer: "Chopin",
                 }
+                //spellcheck
                 const response = await request(app)
                     .post("/pieces")
                     .set("Auth-Token", authToken)
