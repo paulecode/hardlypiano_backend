@@ -73,8 +73,7 @@ const createUserService = (User = UserModel) => {
             throw e
         }
 
-        const salt = await bcrypt.genSalt(10)
-        const hashed = await bcrypt.hash(password, salt)
+        const hashed = await AuthService.hashPassword(password)
         const user = new User({ username, password: hashed })
         return await user.save()
     }

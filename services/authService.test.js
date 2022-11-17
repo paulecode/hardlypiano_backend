@@ -36,9 +36,31 @@ describe("AuthService.js", () => {
             expect(hash1).not.toEqual(hash2)
         })
     })
-    describe("AuthService.checkPassword", () => {
+    describe("AuthService.isPasswordCorrect", () => {
         it("is defined", () => {
-            expect(AuthService.checkPassword).toBeDefined()
+            expect(AuthService.isPasswordCorrect).toBeDefined()
+        })
+        it("returns true on correct match", async () => {
+            const password = "passw0rd"
+            const hashed = await AuthService.hashPassword(password)
+
+            const result = await AuthService.isPasswordCorrect(password, hashed)
+
+            expect(typeof result).toEqual("boolean")
+            expect(result).toEqual(true)
+        })
+        it("returns false on incorrect match", async () => {
+            const hashed = await AuthService.hashPassword("passw0rd")
+            const result = await AuthService.isPasswordCorrect(
+                "taylorswift",
+                hashed
+            )
+
+            expect(result).toEqual(false)
+        })
+        it("throws an error on missing argument", async () => {
+            await expect(AuthService.isPasswordCorrect()).rejects.toThrow()
+            await expect(AuthService.isPasswordCorrect("foo")).rejects.toThrow()
         })
     })
     describe("AuthService.generateToken", () => {

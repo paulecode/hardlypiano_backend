@@ -13,7 +13,12 @@ const createAuthService = () => {
 
         return hashed
     }
-    AuthService.checkPassword = () => {}
+    AuthService.isPasswordCorrect = async (password, hash) => {
+        if (!password || !hash) throw new Error("Missing arguments")
+
+        const isPasswordCorrect = await bcrypt.compare(password, hash)
+        return isPasswordCorrect
+    }
     AuthService.generateToken = () => {}
     AuthService.validateToken = () => {}
     AuthService.loginAndReturnToken = () => {}
