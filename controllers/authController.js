@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
 const userService = require("../services/userService")()
+const AuthService = require("../services/authService")()
 
 async function register(req, res, next) {
     const { username, password } = req.body
@@ -36,12 +37,11 @@ async function login(req, res, next) {
         return
     }
 
-    const validPassword = await bcrypt.compare(password, user.password)
-    if (!validPassword) {
+    const isValid = await AuthService.isPasswordCorrect(password, user.password)
+    if (!isValid) {
         const err = new Error("Invalid password.")
         err.statusCode = 400
-        next(err)
-        return
+        return next(err)
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
