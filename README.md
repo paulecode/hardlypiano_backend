@@ -18,9 +18,23 @@
 
 ## Getting stared
 
-#### Requirements
+#### Downloading the server
 
-#### Running the server
+Create a folder for this project
+
+`mkdir hardlypiano`
+
+CD into it
+
+`cd hardlypiano`
+
+Git Clone
+
+`git clone https://github.com/paulecode/hardlypiano_backend.git .`
+
+Install dependancies
+
+`npm install`
 
 Before starting the servers, you need to provide some environment secrets.
 
