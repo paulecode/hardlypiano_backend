@@ -1,20 +1,29 @@
+// Dependencies
 const express = require("express")
 const app = express()
 const appUtils = require("./utils/appUtils")
+const isConnectedToDb = require("./middleware/isConnectedToDb")
+const logRequestMiddleware = require("./middleware/logRequest")
+const errorMiddleware = require("./middleware/errorMiddleware")
+const toobusy = require("toobusy-js")
+
+// Security
+app.use((res, req, next) => {
+    if (toobusy()) res.send(503, "Server too busy")
+    else next()
+})
 
 // Application-level middleware
 app.use(express.json()) // parses JSON, makes "req.body" available
-const isConnectedToDb = require("./middleware/isConnectedToDb")
-const logRequestMiddleware = require("./middleware/logRequest")
+
+// Custom middleware
 app.use(logRequestMiddleware)
 app.use(isConnectedToDb)
-// appUtils.importMiddleware(app);
 
 // Routing
 appUtils.importRoutes(app)
 
 // Error handling
-const errorMiddleware = require("./middleware/errorMiddleware")
 app.use(errorMiddleware.notFound)
 app.use(errorMiddleware.log)
 app.use(errorMiddleware.sendError)
