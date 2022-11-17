@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const createAuthService = () => {
     const AuthService = {}
+    const secret = process.env.SECRET || "12345"
 
     AuthService.hashPassword = async (password) => {
         if (!password) throw new Error("Password not provided.")
@@ -22,11 +23,18 @@ const createAuthService = () => {
     AuthService.generateToken = (payload) => {
         if (!payload) throw new Error("Payload not provided")
 
-        const secret = process.env.SECRET || "12345"
         const token = jwt.sign(payload, secret)
         return token
     }
-    AuthService.validateToken = () => {}
+    AuthService.verifyToken = (token) => {
+        if (!token) throw new Error("Token not provided.")
+        try {
+            const payload = jwt.verify(token, secret)
+            return payload
+        } catch {
+            throw new Error("Invalid token.")
+        }
+    }
     AuthService.loginAndReturnToken = () => {}
     AuthService.validateLogin = () => {}
 

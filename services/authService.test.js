@@ -70,12 +70,29 @@ describe("AuthService.js", () => {
         it("returns a token from an input", () => {
             const token = AuthService.generateToken({ name: "Irakli" })
             expect(token).toBeDefined()
-            console.log(token)
+        })
+        it("throws an error when no payload provided", () => {
+            expect(() => AuthService.generateToken()).toThrow()
         })
     })
-    describe("AuthService.validateToken", () => {
+    describe("AuthService.verifyToken", () => {
         it("is defined", () => {
-            expect(AuthService.validateToken).toBeDefined()
+            expect(AuthService.verifyToken).toBeDefined()
+        })
+        it("returns a payload on a correct token", () => {
+            const payload = { username: "irakli" }
+            const token = AuthService.generateToken(payload)
+            const verified = AuthService.verifyToken(token)
+
+            expect(verified).toBeDefined()
+            expect(verified.username).toEqual(payload.username)
+        })
+        it("throws an error if no payload provided", () => {
+            expect(() => AuthService.verifyToken()).toThrow()
+        })
+        it("throws an error if token is invalid", () => {
+            const token = "badtoken"
+            expect(() => AuthService.verifyToken(token)).toThrow()
         })
     })
     describe("AuthService.loginAndReturnToken", () => {
