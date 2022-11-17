@@ -58,6 +58,15 @@ const deleteAll = (User) => async (username, password) => {
     return await User.deleteMany({})
 }
 
+const updateProperty = (User) => async (user) => {
+    const foundUser = await getUserById(User)(user._id)
+    console.log(foundUser.password == user.password)
+    console.log({ ...user })
+    foundUser.set({ ...user })
+    console.log(foundUser, user)
+    return await foundUser.save()
+}
+
 module.exports = (User = UserModel) => {
     return {
         getUserById: getUserById(User),
@@ -69,5 +78,6 @@ module.exports = (User = UserModel) => {
         findOne: findOne(User),
         addPiece: addPiece(User),
         testMethod: testMethod(User),
+        updateProperty: updateProperty(User),
     }
 }

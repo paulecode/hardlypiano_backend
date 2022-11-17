@@ -103,6 +103,24 @@ describe("makes successful API call", () => {
                     })
                 expect(response.statusCode).toEqual(200)
             })
+            it("Successfully logs in with new password", async () => {
+                const response = await request(app).post("/auth/login").send({
+                    username: "foo",
+                    password: "baa",
+                })
+                expect(response.statusCode).toEqual(200)
+            })
+            xit("returns an error for a wrong password", async () => {
+                const response = await request(app)
+                    .post("/auth/changepassword")
+                    .send({
+                        username: "foo",
+                        password: "bar",
+                        newPassword: "baa",
+                    })
+                // expect(response.statusCode).not.toEqual(200)
+                expect(response.statusCode).toEqual(400)
+            })
         })
     })
 
