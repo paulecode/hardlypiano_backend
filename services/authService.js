@@ -1,10 +1,21 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const owasp = require("owasp-password-strength-test")
 
 const createAuthService = () => {
     const AuthService = {}
     const secret = process.env.TOKEN_SECRET || "12345"
     const tokenExpiration = process.env.NODE_ENV === "test" ? "5s" : "15m"
+
+    AuthService.checkPasswordStrength = (password) => {
+        if (!password) throw new Error("Password not provided")
+        if (typeof password !== "string")
+            throw new Error("Password must be string")
+
+        const result = owasp.test(password)
+
+        return result
+    }
 
     AuthService.hashPassword = async (password) => {
         if (!password) throw new Error("Password not provided.")

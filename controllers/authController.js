@@ -8,17 +8,24 @@ async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
-        const hashed = await AuthService.hashPassword(password)
-        const user = await UserService.createUser({
-            username,
-            password: hashed,
-        })
-        res.status(200).send({
-            data: {
+        const owaspTest = AuthService.checkPasswordStrength(password)
+        if (owaspTest.strong) {
+            const hashed = await AuthService.hashPassword(password)
+            const user = await UserService.createUser({
                 username,
-                userId: user._id,
-            },
-        })
+                password: hashed,
+            })
+            res.status(200).send({
+                data: {
+                    username,
+                    userId: user._id,
+                },
+            })
+        } else {
+            const { errors } = owaspTest
+            console.log(errors)
+            res.status(400).send({ errors })
+        }
     } catch (e) {
         next(e)
     }
