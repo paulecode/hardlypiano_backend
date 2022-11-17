@@ -79,10 +79,17 @@ describe("makes successful API call", () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send(user)
-                console.log(response.body.message)
                 expect(response.statusCode).toEqual(200)
                 expect(response.headers["auth-token"]).toBeDefined()
-                authToken = response.headers["auth-token"]
+            })
+            it("successfully logs in a user and receives a refresh token", async () => {
+                const response = await request(app)
+                    .post("/auth/login")
+                    .send(user)
+                expect(response.statusCode).toEqual(200)
+                const { token, refreshToken } = response.body
+                expect(refreshToken).toBeDefined()
+                expect(refreshToken).not.toEqual(token)
             })
             it("returns an error for wrong credentials", async () => {
                 const response = await request(app)
@@ -90,6 +97,24 @@ describe("makes successful API call", () => {
                     .send({ ...user, password: "baz" })
                 expect(response.statusCode).not.toEqual(200)
                 expect(response.body.message).toBeDefined()
+            })
+            xit("returns an error for expired token", async (done) => {
+                jest.setTimeout(10000)
+
+                const response = await request(app)
+                    .post("/auth/login")
+                    .send(user)
+                const { token } = response.body
+
+                setTimeout(async () => {
+                    const response = await request(app)
+                        .get("/users")
+                        .set("Auth-Token", token)
+                        .send()
+                    expect(response.statusCode).not.toEqual(200)
+                    console.log(response.message)
+                    done()
+                }, 6000)
             })
         })
         describe("POST /changepassword", () => {
