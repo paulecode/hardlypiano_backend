@@ -36,24 +36,15 @@ async function login(req, res, next) {
     try {
         const user = await UserService.findOne({ username })
         const token = await AuthService.attemptLogin(user, password)
-        const refreshToken = await AuthService.generateRefreshToken({
-            _id: user.id,
-        })
         return res
             .status(200)
             .header("Auth-Token", token)
-            .send({ id: user._id, token, refreshToken })
+            .send({ id: user._id, token })
     } catch (e) {
         const err = new Error("Login failed. Invalid credentials.")
         err.statusCode = 409
         next(e)
     }
-}
-
-async function logout(req, res, next) {
-    const token = req.body.token
-    await AuthService.attemptLogout(token)
-    res.status(204).send("Successfully logged out.")
 }
 
 async function changePassword(req, res, next) {
@@ -86,23 +77,4 @@ async function changePassword(req, res, next) {
     return res.status(200).send("Password changed successfully.")
 }
 
-async function refreshToken(req, res, next) {
-    const refreshToken = req.body.token
-    if (!refreshToken)
-        return res.status(401).send("Bad request. No refresh token provided.")
-
-    if (!refreshTokens.includes(refreshToken))
-        return res.status(403).send("Expired token.")
-
-    try {
-        const { _id } = AuthService.verifyToken(refreshToken)
-        const accessToken = AuthService.generateToken({ _id })
-        res.status(200).send({ token: accessToken })
-    } catch (e) {
-        const err = new Error("Invalid token")
-        err.statusCode = 403
-        next(err)
-    }
-}
-
-module.exports = { register, login, changePassword, refreshToken, logout }
+module.exports = { register, login, changePassword }
