@@ -22,6 +22,28 @@
 
 #### Running the server
 
+Before starting the servers, you need to provide some environment secrets.
+
+Please create a .env file by running
+
+`touch .env`
+
+Your .env file needs to have the following properties to run:
+
+-   MONGODB_URI
+-   TOKEN_SECRET
+
+Feel free to supply your own MongoDB URL if you have one. The Token Secret is just a random string used for hashing. Otherwise, we prepared a test database, you will just need to copy and paste it.
+
+```
+MONGODB_URI="mongodb+srv://codeuni:unfortunatelycleartext@cluster0.z5lpzob.mongodb.net/?retryWrites=true&w=majority"
+TOKEN_SECRET="64e49888ea55824fe86c1030daf7bfe1ccafba546522ab237ea5480305ec93a26d1c494042e72ff5c4c0f2942762438fd4ec305081782baeda9f0ce160d0ecc6"
+```
+
+To run the server locally, please run
+
+`npm run dev`
+
 #### Running tests
 
 ---
