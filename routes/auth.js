@@ -4,8 +4,8 @@ const path = "/auth"
 
 // Security
 if (!process.env.NODE_ENV === "test") {
-    const bouncer = require("../security/bouncer")
-    router.use(bouncer.block)
+    router.use(require("../security/bouncer").block)
+    router.use(require("../security/sanitize").middleware)
 }
 
 const authController = require("../controllers/authController")

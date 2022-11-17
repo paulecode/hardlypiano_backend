@@ -20,7 +20,8 @@
         "express-bouncer": "^0.2.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.6.5",
-        "nodemon": "^2.0.20"
+        "nodemon": "^2.0.20",
+        "sanitize": "^2.1.2"
     },
     "devDependencies": {
         "jest": "^29.2.1",
