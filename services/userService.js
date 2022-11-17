@@ -6,10 +6,6 @@ const UserModel = require("../models/User.js")
 const createUserService = (User = UserModel) => {
     const UserService = {}
 
-    UserService.getUsers = () => {
-        return User.find({})
-    }
-
     UserService.getUserById = async (userId) => {
         if (!userId) throw new Error("No userId provided.")
         return await User.findById(userId)
@@ -17,6 +13,10 @@ const createUserService = (User = UserModel) => {
 
     UserService.find = async (filters) => {
         return await User.find(filters)
+    }
+
+    UserService.getUsers = async () => {
+        return await User.find({})
     }
 
     UserService.findOne = async (filters) => {
@@ -88,10 +88,7 @@ const createUserService = (User = UserModel) => {
 
     UserService.updateProperty = async (user) => {
         const foundUser = await getUserById(User)(user._id)
-        console.log(foundUser.password == user.password)
-        console.log({ ...user })
         foundUser.set({ ...user })
-        console.log(foundUser, user)
         return await foundUser.save()
     }
 
