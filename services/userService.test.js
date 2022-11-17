@@ -13,11 +13,11 @@ afterAll(async () => {
 
 describe("UserService functions", () => {
     let user
+    let userExample = { username: "foo", password: "bar" }
 
     beforeAll(async () => {
         user = await UserService.createUser({
-            username: "foo",
-            password: "bar",
+            ...userExample,
         })
         expect(user).toBeDefined()
     })
@@ -37,6 +37,60 @@ describe("UserService functions", () => {
         it("doesn't create a User with same username", async () => {
             expect(async () => {
                 const user = await UserService.createUser({ ...userExample })
+            }).rejects.toThrow()
+        })
+        it("converts an uppercase username to lowercase", async () => {
+            const uppercasedUser = {
+                username: "Fool",
+                password: "bar",
+            }
+            const savedUser = await UserService.createUser(uppercasedUser)
+            expect(savedUser.username).toEqual("fool")
+            expect(savedUser.username).not.toEqual(uppercasedUser.username)
+        })
+        it("Does not allow to create a user with the same username but different case", async () => {
+            const uppercasedFooUser = {
+                username: "Foo",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(uppercasedFooUser)
+            }).rejects.toThrow()
+        })
+        it("Does not allow a username to be shorter than 3 characters", async () => {
+            const shortUsername = {
+                username: "fo",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(shortUsername)
+            }).rejects.toThrow()
+        })
+        it("Does not allow a username to be longer than 16 characters", async () => {
+            const longUsername = {
+                username: "chalidaasawakanjanakit",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(longUsername)
+            }).rejects.toThrow()
+        })
+        it("Does not allow a username to contain spaces", async () => {
+            const spaceUsername = {
+                username: "Paul Ebert",
+                password: "bar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(spaceUsername)
+            }).rejects.toThrow()
+        })
+        it("does not allow non alphanumeric usernames to sign up.", async () => {
+            const nonAlphaNumUser = {
+                username: "JoeyBad.A$$",
+                password: "foobar",
+            }
+            expect(async () => {
+                const user = await UserService.createUser(nonAlphaNumUser)
             }).rejects.toThrow()
         })
     })
