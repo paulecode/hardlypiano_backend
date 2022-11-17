@@ -1,4 +1,4 @@
-const db = require("./production-db")
+const db = require("./undefined-db")
 const mongoose = require("mongoose")
 
 describe("connects to production db", () => {

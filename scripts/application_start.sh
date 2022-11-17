@@ -20,5 +20,5 @@ npm install
 
 #start our node app in the background
 
-node server.js > app.out.log 2> app.err.log < /dev/null & 
+npm run prod > app.out.log 2> app.err.log < /dev/null & 
 # npm run prod &
