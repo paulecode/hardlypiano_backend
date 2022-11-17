@@ -1,12 +1,12 @@
 const db = require("../db")
-const isConnectedToDb = (res, req, next) => {
+const isConnectedToDb = (req, res, next) => {
     // if (!db.connected()) {
     //     const message = "Internal server error. Not connected to database"
     //     const err = new Error(message)
     //     err.statusCode = 500
     //     throw err
     // }
-    res.send(
+    res.json(
         "Process: " +
             process.env.NODE_PROCESS +
             "\nURL: " +
