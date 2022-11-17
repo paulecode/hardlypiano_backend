@@ -33,23 +33,19 @@ const testMethod = (User) => () => {
 const validateUsername = (username) => {
     if (username.length < 3) {
         const error = new Error("Username must be at least 3 characters long.")
-        error.statusCode = 400
         throw error
     }
     if (username.length > 16) {
         const error = new Error("Username can't be longer than 16 characters.")
-        error.statusCode = 400
         throw error
     }
     if (username.includes(" ")) {
         const error = new Error("Username can't contain whitespace.")
-        error.statusCode = 400
         throw error
     }
     const alphanumRegex = /^[A-Za-z0-9]+$/
     if (!alphanumRegex.test(username)) {
         const error = new Error("Username cannot contain special characters.")
-        error.statusCode = 400
         throw error
     }
     return
@@ -74,6 +70,7 @@ const createUser =
         try {
             validateUsername(username)
         } catch (e) {
+            e.statusCode = 400
             throw e
         }
 
