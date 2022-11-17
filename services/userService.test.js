@@ -1,7 +1,7 @@
 const db = require("../db")
 const User = require("../models/User")
-const UserServiceConstructor = require("./userService")
-const UserService = UserServiceConstructor(User)
+const createUserService = require("./userService")
+const UserService = createUserService(User)
 
 beforeAll(async () => {
     await db.connect()
@@ -30,14 +30,10 @@ describe("UserService functions", () => {
             const found = await User.findOne({ username: "foo" })
             expect(found.username).toEqual(user.username)
         })
-        it("hashes the password", async () => {
-            const found = await User.findOne({ username: "foo" })
-            expect(found.password).not.toEqual("bar")
-        })
         it("doesn't create a User with same username", async () => {
-            expect(async () => {
-                const user = await UserService.createUser({ ...userExample })
-            }).rejects.toThrow()
+            await expect(
+                UserService.createUser({ ...userExample })
+            ).rejects.toThrow()
         })
         it("converts an uppercase username to lowercase", async () => {
             const uppercasedUser = {

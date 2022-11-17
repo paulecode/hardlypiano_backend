@@ -79,6 +79,7 @@ describe("makes successful API call", () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send(user)
+                console.log(response.body.message)
                 expect(response.statusCode).toEqual(200)
                 expect(response.headers["auth-token"]).toBeDefined()
                 authToken = response.headers["auth-token"]

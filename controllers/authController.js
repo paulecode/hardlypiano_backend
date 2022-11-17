@@ -1,13 +1,18 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
-const userService = require("../services/userService")()
+const UserService = require("../services/userService")()
+const AuthService = require("../services/authService")()
 
 async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
-        const user = await userService.createUser({ username, password })
+        const hashed = await AuthService.hashPassword(password)
+        const user = await UserService.createUser({
+            username,
+            password: hashed,
+        })
         res.status(200).send({
             data: {
                 username,
@@ -28,24 +33,18 @@ async function login(req, res, next) {
         return
     }
 
-    const user = await userService.findOne({ username })
-    if (!user) {
-        const err = new Error("Username not found.")
+    try {
+        const user = await UserService.findOne({ username })
+        const token = await AuthService.attemptLogin(username, password)
+        return res
+            .status(200)
+            .header("Auth-Token", token)
+            .send({ id: user._id, token })
+    } catch (e) {
+        const err = new Error("Login failed. Invalid credentials.")
         err.statusCode = 409
-        next(err)
-        return
+        next(e)
     }
-
-    const validPassword = await bcrypt.compare(password, user.password)
-    if (!validPassword) {
-        const err = new Error("Invalid password.")
-        err.statusCode = 400
-        next(err)
-        return
-    }
-
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-    return res.header("Auth-Token", token).send({ id: user._id, token })
 }
 
 async function changePassword(req, res, next) {
@@ -57,7 +56,7 @@ async function changePassword(req, res, next) {
         return
     }
 
-    const user = await userService.findOne({ username })
+    const user = await UserService.findOne({ username })
     if (!user) {
         const err = new Error("Username not found.")
         err.statusCode = 409
@@ -65,17 +64,15 @@ async function changePassword(req, res, next) {
         return
     }
 
-    const validPassword = await bcrypt.compare(password, user.password)
-    if (!validPassword) {
+    const isValid = await AuthService.isPasswordCorrect(password, user.password)
+    if (!isValid) {
         const err = new Error("Invalid password.")
         err.statusCode = 400
-        next(err)
-        return
+        return next(err)
     }
 
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(newPassword, salt)
-    user.password = hashedPassword
+    const hashed = await AuthService.hashPassword(newPassword)
+    user.password = hashed
     await user.save()
     // await userService.updateProperty(user)
     //what do i return here?
