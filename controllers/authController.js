@@ -1,55 +1,89 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
-const userService = require("../services/userService")()
+const UserService = require("../services/userService")()
+const AuthService = require("../services/authService")()
 
-async function register(req, res) {
+async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
-        const user = await userService.createUser({ username, password })
-        res.status(200).send(user)
+        if (process.env.NODE_ENV === "production") {
+            const owaspTest = AuthService.checkPasswordStrength(password)
+            if (!owaspTest.strong) {
+                const { errors } = owaspTest
+                console.log(errors)
+                res.status(400).send({ errors })
+                return
+            }
+        }
+        const hashed = await AuthService.hashPassword(password)
+        const user = await UserService.createUser({
+            username,
+            password: hashed,
+        })
+        res.status(200).send({
+            data: {
+                username,
+                userId: user._id,
+            },
+        })
     } catch (e) {
-        res.status(400).send(e.message)
+        next(e)
+    }
+}
+
+async function login(req, res, next) {
+    const { username, password } = req.body
+    if (!username || !password) {
+        const err = new Error("Bad request. Missing fields.")
+        err.statusCode = 400
+        next(err)
+        return
     }
 
-    // if (!username || !password)
-    // 	return res
-    // 		.status(400)
-    // 		.send('Bad request. Username and/or password not provided.');
-
-    // const foundUser = await userService.findOne({ username });
-    // if (foundUser) {
-    // 	return res.status(409).send('Bad request. Username already in use.');
-    // }
-
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(password, salt);
-
-    // try {
-    // 	const user = await userService.createUser({
-    // 		username: username,
-    // 		password: hashedPassword,
-    // 	});
-    // 	res.status(201).send({ message: 'user successfully registered', user });
-    // } catch (e) {
-    // 	res.status(400).send(e.message);
-    // }
+    try {
+        const user = await UserService.findOne({ username })
+        const token = await AuthService.attemptLogin(user, password)
+        return res
+            .status(200)
+            .header("Auth-Token", token)
+            .send({ id: user._id, token })
+    } catch (e) {
+        const err = new Error("Login failed. Invalid credentials.")
+        err.statusCode = 409
+        next(e)
+    }
 }
 
-async function login(req, res) {
-    const { username, password } = req.body
-    if (!username || !password)
-        return res.status(400).send("Bad request. Missing fields")
+async function changePassword(req, res, next) {
+    const { username, password, newPassword } = req.body
+    if (!username || !password || !newPassword) {
+        const err = new Error("Bad request. Missing fields.")
+        res.statusCode = 400
+        next(err)
+        return
+    }
 
-    const user = await userService.findOne({ username })
-    if (!user) return res.status(409).send("Username not found.")
+    const user = await UserService.findOne({ username })
+    if (!user) {
+        const err = new Error("Username not found.")
+        err.statusCode = 409
+        next(err)
+        return
+    }
 
-    const validPassword = await bcrypt.compare(password, user.password)
-    if (!validPassword) return res.status(400).send("Invalid password.")
+    const isValid = await AuthService.isPasswordCorrect(password, user.password)
+    if (!isValid) {
+        const err = new Error("Invalid password.")
+        err.statusCode = 400
+        return next(err)
+    }
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-    return res.header("Auth-Token", token).send({ id: user._id, token })
+    const hashed = await AuthService.hashPassword(newPassword)
+    user.password = hashed
+    await user.save()
+    return res.status(200).send("Password changed successfully.")
 }
 
-module.exports = { register, login }
+module.exports = { register, login, changePassword }

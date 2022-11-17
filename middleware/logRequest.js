@@ -1,6 +1,8 @@
 function logRequestMiddleware(req, res, next) {
-    console.log(`${new Date().toLocaleString()}: ${req.method} ${req.url}`)
-    if (Object.keys(req.body).length > 0) console.log(req.body)
+    if (process.env.NODE_ENV === "development") {
+        console.log(`${new Date().toLocaleString()}: ${req.method} ${req.url}`)
+        if (Object.keys(req.body).length > 0) console.log(req.body)
+    }
     next()
 }
 

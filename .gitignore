@@ -1,4 +1,6 @@
 node_modules
 .env
 playground*.js
+playground
 my.secrets
+coverage

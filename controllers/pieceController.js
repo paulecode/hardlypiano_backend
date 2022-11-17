@@ -6,19 +6,7 @@ const getAll = async (req, res) => {
 
     try {
         const pieces = await pieceService.getPieces(userId)
-        return res.status(200).send(pieces)
-    } catch (e) {
-        res.status(400).send(e.message)
-    }
-}
-
-const create = async (req, res) => {
-    const userId = req.user._id
-    const pieceDetails = req.body
-
-    try {
-        const pieces = await pieceService.createPiece(userId, pieceDetails)
-        return res.status(200).send(pieces)
+        return res.status(200).send({ data: pieces })
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -30,7 +18,52 @@ const get = async (req, res) => {
 
     try {
         const piece = await pieceService.getPieceById(userId, pieceId)
-        return res.status(200).send(piece)
+        return res.status(200).send({ data: piece })
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+}
+
+const create = async (req, res) => {
+    const userId = req.user._id
+    const pieceDetails = req.body
+
+    try {
+        const piece = await pieceService.createPiece(userId, pieceDetails)
+        return res.status(200).send({ data: piece })
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+}
+
+const deleteOne = async (req, res) => {
+    console.log("got here")
+    const userId = req.user._id
+    const pieceId = req.params.id
+
+    try {
+        await pieceService.deletePiece(userId, pieceId)
+        return res.status(200).send({ message: "Piece successfully deleted." })
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+}
+
+const deleteMany = async (req, res) => {
+    const userId = req.user._id
+    const { pieceIds } = req.body
+
+    if (!pieceIds || pieceIds.length === 0)
+        return res.status(400).send("Bad request: pieceIds not provided.")
+
+    try {
+        const deletedCount = await pieceService.deleteManyPieces(
+            userId,
+            pieceIds
+        )
+        return res
+            .status(200)
+            .send({ message: `${deletedCount} pieces successfully deleted` })
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -47,11 +80,11 @@ const update = async (req, res) => {
             pieceId,
             pieceDetails
         )
-        return res.status(200).send(piece)
+        return res.status(200).send({ data: piece })
     } catch (e) {
         console.log(e)
         res.status(400).send(e.message)
     }
 }
 
-module.exports = { getAll, create, get, update }
+module.exports = { getAll, create, get, update, deleteOne, deleteMany }

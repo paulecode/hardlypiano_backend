@@ -5,8 +5,6 @@ const User = require("../models/User")
 describe("connects to production db", () => {
     beforeAll(() => {
         require("dotenv").config()
-        console.log("HELLO THIS IS THING", process.env.NODE_ENV)
-        console.log("HELLO THIS IS MONGO", process.env.MONGODB_URI)
     })
     beforeEach(async () => {
         await db.connect()
