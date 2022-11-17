@@ -8,6 +8,15 @@ async function register(req, res, next) {
     const { username, password } = req.body
 
     try {
+        if (process.env.NODE_ENV === "production") {
+            const owaspTest = AuthService.checkPasswordStrength(password)
+            if (!owaspTest.strong) {
+                const { errors } = owaspTest
+                console.log(errors)
+                res.status(400).send({ errors })
+                return
+            }
+        }
         const hashed = await AuthService.hashPassword(password)
         const user = await UserService.createUser({
             username,
