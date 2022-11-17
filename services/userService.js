@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt")
 
 const UserModel = require("../models/User.js")
 
+const AuthService = require("./authService")()
+
 const createUserService = (User = UserModel) => {
     const UserService = {}
 
