@@ -99,27 +99,44 @@ describe("makes successful API call", () => {
                     .send({
                         username: "foo",
                         password: "bar",
-                        newPassword: "baa",
+                        newPassword: "newpassword",
                     })
                 expect(response.statusCode).toEqual(200)
             })
             it("Successfully logs in with new password", async () => {
                 const response = await request(app).post("/auth/login").send({
                     username: "foo",
-                    password: "baa",
+                    password: "newpassword",
                 })
                 expect(response.statusCode).toEqual(200)
             })
-            xit("returns an error for a wrong password", async () => {
+            it("returns an error for a wrong password", async () => {
                 const response = await request(app)
                     .post("/auth/changepassword")
                     .send({
                         username: "foo",
                         password: "bar",
-                        newPassword: "baa",
+                        newPassword: "baaa",
                     })
-                // expect(response.statusCode).not.toEqual(200)
+                expect(response.statusCode).not.toEqual(200)
                 expect(response.statusCode).toEqual(400)
+            })
+            it("returns an error for a wrong username", async () => {
+                const response = await request(app)
+                    .post("/auth/changepassword")
+                    .send({
+                        username: "fool",
+                        password: "bar",
+                    })
+                expect(response.statusCode).not.toEqual(200)
+                expect(response.statusCode).toEqual(400)
+            })
+            afterAll(async () => {
+                await request(app).post("/auth/changepassword").send({
+                    username: "foo",
+                    password: "newpassword",
+                    newPassword: "bar",
+                })
             })
         })
     })
