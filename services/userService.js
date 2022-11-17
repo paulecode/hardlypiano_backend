@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 
 const UserModel = require("../models/User.js")
 
-const AuthService = require("./authService")()
+// const AuthService = require("./authService")()
 
 const createUserService = (User = UserModel) => {
     const UserService = {}
@@ -73,8 +73,9 @@ const createUserService = (User = UserModel) => {
             throw e
         }
 
-        const hashed = await AuthService.hashPassword(password)
-        const user = new User({ username, password: hashed })
+        // const salt = await bcrypt.genSalt(10)
+        // const hashed = await bcrypt.hash(password, salt)
+        const user = new User({ username, password })
         return await user.save()
     }
 

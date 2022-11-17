@@ -30,10 +30,6 @@ describe("UserService functions", () => {
             const found = await User.findOne({ username: "foo" })
             expect(found.username).toEqual(user.username)
         })
-        it("hashes the password", async () => {
-            const found = await User.findOne({ username: "foo" })
-            expect(found.password).not.toEqual("bar")
-        })
         it("doesn't create a User with same username", async () => {
             await expect(
                 UserService.createUser({ ...userExample })

@@ -43,7 +43,7 @@ describe("makes successful API call", () => {
             })
         })
     })
-    describe("/auth ---------------", () => {
+    describe.only("/auth ---------------", () => {
         describe("POST /register", () => {
             it("successfully registers a user", async () => {
                 const response = await request(app)

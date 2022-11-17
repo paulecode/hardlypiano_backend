@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const UserService = require("./userService")()
+
 const createAuthService = () => {
     const AuthService = {}
     const secret = process.env.SECRET || "12345"
@@ -33,6 +35,21 @@ const createAuthService = () => {
             return payload
         } catch {
             throw new Error("Invalid token.")
+        }
+    }
+    AuthService.attemptLogin = async (username, password) => {
+        try {
+            const user = await userService.findOne({ username })
+            if (!user) throw new Error()
+
+            const hash = user.password
+            const valid = await AuthService.isPasswordCorrect(password, hash)
+            if (!valid) throw new Error()
+
+            const token = AuthService.generateToken({ _id: user.id })
+            return token
+        } catch (e) {
+            throw new Error("Login failed. Invalid credentials.")
         }
     }
     AuthService.loginAndReturnToken = () => {}
