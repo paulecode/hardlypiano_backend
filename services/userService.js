@@ -52,8 +52,9 @@ const validateUsername = (username) => {
         error.statusCode = 400
         throw error
     }
-    return true
+    return
 }
+
 const createUser =
     (User) =>
     async ({ username, password }) => {
