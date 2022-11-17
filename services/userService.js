@@ -38,6 +38,7 @@ const createUser =
             error.statusCode = 400
             throw error
         }
+        username = username.toLowerCase()
         if (await User.findOne({ username })) {
             const error = new Error("Username already in use.")
             error.statusCode = 403
