@@ -20,7 +20,6 @@ async function register(req, res, next) {
             },
         })
     } catch (e) {
-        // console.log(e)
         next(e)
     }
 }
@@ -36,16 +35,14 @@ async function login(req, res, next) {
 
     try {
         const user = await UserService.findOne({ username })
-        if (!user) throw new Error()
-
         const token = await AuthService.attemptLogin(username, password)
         return res
             .status(200)
             .header("Auth-Token", token)
             .send({ id: user._id, token })
     } catch (e) {
-        const loginError = new Error("Login failed. Invalid credentials.")
-        loginError.statusCode = 409
+        const err = new Error("Login failed. Invalid credentials.")
+        err.statusCode = 409
         next(e)
     }
 }

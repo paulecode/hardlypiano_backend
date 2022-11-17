@@ -95,9 +95,9 @@ describe("AuthService.js", () => {
             expect(() => AuthService.verifyToken(token)).toThrow()
         })
     })
-    describe("AuthService.loginAndReturnToken", () => {
+    describe("AuthService.attemptLogin", () => {
         it("is defined", () => {
-            expect(AuthService.loginAndReturnToken).toBeDefined()
+            expect(AuthService.attemptLogin).toBeDefined()
         })
     })
 })
