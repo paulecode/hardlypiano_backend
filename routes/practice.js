@@ -3,6 +3,8 @@ const isAuthenticated = require("../middleware/isAuthenticated")
 const router = express.Router()
 const path = "/pieces/:pieceId/practice"
 
+const practiceController = require("../controllers/practiceController")
+
 router.use(isAuthenticated)
 
 router.get("/", practiceController.getAll)

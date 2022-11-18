@@ -124,4 +124,15 @@ const getMostPracticed = async (req, res, next) => {
     }
 }
 
-module.exports = { getAll, create, get, update, deleteOne, deleteMany }
+module.exports = {
+    getAll,
+    create,
+    get,
+    update,
+    deleteOne,
+    deleteMany,
+    getRecentlyPracticed,
+    getLeastPracticed,
+    getLongestSincePractice,
+    getMostPracticed,
+}
