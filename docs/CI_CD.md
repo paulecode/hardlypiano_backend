@@ -8,7 +8,7 @@ Modules covered: **SE_23 Continuous**
 
 ## Deployment pipeline
 
-![placeholder-name](.//img/placeholder.jpg)
+![placeholder-name](./img/CI_CD_Diagram.png)
 @Paul fill this in
 
 ## GitHub Actions

@@ -11,7 +11,6 @@ const PracticeSessionSchema = new mongoose.Schema({
     },
     durationInMinutes: Number,
     score: Number,
-    type: String,
 })
 
 const PracticeSession = new mongoose.model(

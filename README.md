@@ -73,7 +73,7 @@ For a detailed look into the Node server and REST API, please visit the [Backend
 
 ## Database
 
-![placeholder-name](./docs/img/placeholder.jpg)
+![Database diagram](./docs/img/Database_Diagram.png)
 [🖼 Database model diagram]
 
 [Describe the use of MongoDB as database, mongoose as ODM and MongoDB Atlas as hosting]
@@ -85,13 +85,13 @@ For a detailed look into the MongoDB database, please visit the [Database docume
 
 ## Deployment
 
-![placeholder-name](./docs/img/placeholder.jpg)
+![CI/CD Diagram](./docs/img/CI_CD_Diagram.png)
 [🖼 Deployment/pipeline diagram]
 
 [Basic description of AWS hosting, deployment pipeline]
 
 **SE_23 CI/CD**  
-For a detailed look into the deployment pipeline, please visit the [CI/CD documentation](./docs/CICD.md)
+For a detailed look into the deployment pipeline, please visit the [CI/CD documentation](./docs/CI_CD.md)
 
 ---
 
@@ -105,8 +105,7 @@ For a detailed look into the deployment pipeline, please visit the [CI/CD docume
 
 Here is the threat model for our application:
 
-![placeholder-name](./docs/img/placeholder.jpg)
-[🖼 Threat model]
+![Threat Model Diagram](./docs/img/Threat_Model_Diagram.png)
 
 We have taken a list of security measurements in the different aspects of our app, such as password encryption, input sanitation, user authorization, and more.
 

@@ -1,3 +1,3 @@
 This is a visualizaton of the Pipeline
 
-![Image](./docs/img/CI_CDDiagram.png)
+![Image](./img/CI_CD_Diagram.png)
