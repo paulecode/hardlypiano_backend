@@ -3,9 +3,11 @@ const isAuthenticated = require("../middleware/isAuthenticated")
 const router = express.Router()
 const path = "/pieces/:pieceId/practice"
 
-router.get("/", isAuthenticated, practiceController.get)
-router.get("/:id", isAuthenticated, practiceController.get)
-router.delete("/:id", isAuthenticated, practiceController.delete)
-router.post("/", isAuthenticated, practiceController.post)
+router.use(isAuthenticated)
+
+router.get("/", practiceController.get)
+router.get("/:id", practiceController.get)
+router.delete("/:id", practiceController.delete)
+router.post("/", practiceController.post)
 
 module.exports = { path, router }
