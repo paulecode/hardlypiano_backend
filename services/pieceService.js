@@ -106,6 +106,21 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         }
     }
 
+    PieceService.updateTotalPracticeTime = async (userId, pieceId) => {
+        const user = UserService.getUserById(userId)
+        const piece = user.pieces.id(pieceId)
+        const totalTime = piece.practiceSessions.reduce(
+            (acc, session) => acc + obj.totalPracticeMinutes,
+            0
+        )
+
+        piece.set({ totalPracticeMinutes: totalTime })
+
+        await user.save()
+
+        return
+    }
+
     PieceService.deleteManyPieces = async (userId, pieceIds) => {
         if (!userId) throw new Error("User not provided.")
 

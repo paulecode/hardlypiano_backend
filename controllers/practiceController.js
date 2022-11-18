@@ -13,6 +13,7 @@ PracticeController.post = async (req, res, next) => {
             endDate
         )
         await PieceService.addPracticeSession(userId, pieceId, session)
+        await PieceService.updateTotalPracticeTime(userId, pieceId)
         res.status(200).send({
             message: "Practice session added successfuly",
             data: session,
