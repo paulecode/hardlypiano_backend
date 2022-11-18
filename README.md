@@ -16,34 +16,32 @@ Hardly Piano is an app designed to help musicians keep track of their practice s
 
 ## Getting stared
 
-#### Downloading the server
+### Requirements
 
-Create a folder for this project
+To run a development server, make sure you have the following installed:
 
-`mkdir hardlypiano`
+-   Node.js 16.0+
+-   NPM (node package manager), 8.0+ recommended
 
-CD into it
+### Setup and dependencies
 
-`cd hardlypiano`
+Clone the repo into your local env:
 
-Git Clone
+```
+$ git clone https://github.com/paulecode/hardlypiano_backend.git .
+```
 
-`git clone https://github.com/paulecode/hardlypiano_backend.git .`
+Install the npm dependencies:
 
-Install dependancies
+```
+$ npm install
+```
 
-`npm install`
+The server also depends on some secret variables, which you can supply in a `.env` file of the main directory. Create an empty `.env` file by running:
 
-Before starting the servers, you need to provide some environment secrets.
-
-Please create a .env file by running
-
-`touch .env`
-
-Your .env file needs to have the following properties to run:
-
--   MONGODB_URI
--   TOKEN_SECRET
+```
+$ touch .env
+```
 
 Feel free to supply your own MongoDB URL if you have one. The Token Secret is just a random string used for hashing. Otherwise, we prepared a test database, you will just need to copy and paste it.
 
@@ -52,23 +50,23 @@ MONGODB_URI="mongodb+srv://codeuni:unfortunatelycleartext@cluster0.z5lpzob.mongo
 TOKEN_SECRET="64e49888ea55824fe86c1030daf7bfe1ccafba546522ab237ea5480305ec93a26d1c494042e72ff5c4c0f2942762438fd4ec305081782baeda9f0ce160d0ecc6"
 ```
 
-#### Run scripts
+### Run the server
 
-##### Running a development server
+#### Running a development server
 
 ```bash
 # starts a server, connects to staging database and watches for file changes
 npm run dev
 ```
 
-##### Running a production server
+#### Running a production server
 
 ```bash
 # starts a production server and connects to the production database
 npm run prod
 ```
 
-##### Running tests
+#### Running tests
 
 ```bash
 # test all files ending in '.test.js', using Jest
