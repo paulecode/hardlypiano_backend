@@ -144,6 +144,41 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         return count
     }
 
+    PieceService.getSortedPieces = async (userId, compareFn) => {
+        const user = await UserService.getUserById(userId)
+        const pieces = user.pieces.sort(
+            (a, b) => b.totalPracticeMinutes - a.totalPracticeMinutes
+        )
+        const piece = pieces[0]
+        return piece
+    }
+
+    PieceService.getRecentlyPracticed = async (userId) => {
+        const compare = (a, b) => b.lastPracticedDate - a.lastPracticedDate
+        const piece = await PieceService.getSortedPieces(userId, compare)
+        return piece
+    }
+
+    PieceService.getLongestSincePractice = async (userId) => {
+        const compare = (a, b) => a.lastPracticedDate - b.lastPracticedDate
+        const piece = await PieceService.getSortedPieces(userId, compare)
+        return piece
+    }
+
+    PieceService.getMostPracticed = async (userId) => {
+        const compare = (a, b) =>
+            b.totalPracticeMinutes - a.totalPracticeMinutes
+        const piece = await PieceService.getSortedPieces(userId, compare)
+        return piece
+    }
+
+    PieceService.getLeastPracticed = async (userId) => {
+        const compare = (a, b) =>
+            a.totalPracticeMinutes - b.totalPracticeMinutes
+        const piece = await PieceService.getSortedPieces(userId, compare)
+        return piece
+    }
+
     PieceService.deleteAllPieces = async (userId) => {
         if (!userId) throw new Error("User not provided.")
 

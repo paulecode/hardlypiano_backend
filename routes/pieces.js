@@ -13,9 +13,13 @@ router.use(isAuthenticated)
 router.get("/", pieceController.getAll)
 router.get("/:id", pieceController.get)
 router.patch("/:id", pieceController.update)
-router.post("/:pieceId/practice", practiceController.create)
 router.post("/", pieceController.create)
 router.delete("/:id", pieceController.deleteOne)
 router.delete("/", pieceController.deleteMany)
+
+router.get("/recently-practiced", pieceController.getRecentlyPracticed())
+router.get("/longest-since-practice", pieceController.getLongestSincePractice())
+router.get("/least-practiced", pieceController.getLeastPracticed())
+router.get("/most-practiced", pieceController.getMostPracticed())
 
 module.exports = { path, router }
