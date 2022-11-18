@@ -2,9 +2,9 @@
 
 [project background, information, team members, backend structure]
 
-[❗ Link to live server (use with Postman)](#missing)
+[❗ Link to live server (use with Postman)](http://ec2-3-66-192-132.eu-central-1.compute.amazonaws.com:3000)
 
-[❗ Link to Swift app repo](#missing)
+[❗ Link to Swift app repo](https://github.com/paulecode/HardlyPianoSwift)
 
 ---
 
