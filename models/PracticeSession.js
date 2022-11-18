@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 
 const PracticeSessionSchema = new mongoose.Schema({
-    startTime: {
+    startDate: {
         type: Date,
         required: true,
     },
-    endTime: {
+    endDate: {
         type: Date,
         required: true,
     },
