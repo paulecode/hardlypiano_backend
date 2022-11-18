@@ -32,17 +32,16 @@ const createPracticeSessionService = (PracticeSession = PracticeModel) => {
     }
 
     PracticeService.createPracticeSession = async (startISO, endISO) => {
-        const startTime = new Date(startISO)
-        const endTime = new Date(endISO)
+        const startDate = new Date(startISO)
+        const endDate = new Date(endISO)
 
         const durationInMinutes = PracticeService.calculateDiffInMinutes(
-            startTime,
-            endTime
+            startDate,
+            endDate
         )
-        // console.log("HERE IS DURATION", startTime, endTime, durationInMinutes)
         const practiceSession = new PracticeSession({
-            startTime,
-            endTime,
+            startDate,
+            endDate,
             durationInMinutes,
         })
         return practiceSession

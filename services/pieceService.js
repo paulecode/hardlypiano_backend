@@ -20,6 +20,8 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         if (!user) throw new Error("User not found.")
 
         const piece = new Piece(pieceDetails)
+        piece.lastPracticedDate = null
+        piece.totalPracticeMinutes = 0
         await piece.save()
         await UserService.addPiece(userId, piece)
 
@@ -39,14 +41,6 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         return piece
     }
 
-    PieceService.addPracticeToPiece = async (piece, session) => {
-        console.log(piece)
-        piece.practiceSessions.push(session)
-        piece.totalPracticeMinutes += session.durationInMinutes
-
-        return await piece.save()
-    }
-
     PieceService.updatePiece = async (userId, pieceId, pieceDetails) => {
         if (!userId) throw new Error("User not provided.")
 
@@ -54,7 +48,6 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         if (!user) throw new Error("User not found.")
 
         const piece = user.pieces.id(pieceId)
-        // console.log({ ...pieceDetails })
         piece.set({ ...pieceDetails })
 
         await user.save()
@@ -83,7 +76,10 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         const piece = user.pieces.id(pieceId)
 
         piece.practiceSessions.push(practiceSession)
-        piece.set({ lastPracticedDate: practiceSession.endDate })
+        piece.lastPracticedDate = practiceSession.endDate
+        user.pieces
+            .id(pieceId)
+            .set("lastPracticedDate", practiceSession.endDate)
 
         await user.save()
 
@@ -106,11 +102,23 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         }
     }
 
+    PieceService.removeAllPracticeSessions = async (userId, pieceId) => {
+        const user = await UserService.getUserById(userId)
+        const piece = user.pieces.id(pieceId)
+
+        piece.set({ practiceSessions: [] })
+        piece.set({ lastPracticedDate: null })
+        await PieceService.updateTotalPracticeTime(userId, pieceId)
+
+        await user.save()
+        return
+    }
+
     PieceService.updateTotalPracticeTime = async (userId, pieceId) => {
-        const user = UserService.getUserById(userId)
+        const user = await UserService.getUserById(userId)
         const piece = user.pieces.id(pieceId)
         const totalTime = piece.practiceSessions.reduce(
-            (acc, session) => acc + obj.totalPracticeMinutes,
+            (acc, session) => acc + session.durationInMinutes,
             0
         )
 
