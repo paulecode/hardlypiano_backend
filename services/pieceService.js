@@ -154,37 +154,35 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
 
     PieceService.getSortedPieces = async (userId, compareFn) => {
         const user = await UserService.getUserById(userId)
-        const pieces = user.pieces.sort(
-            (a, b) => b.totalPracticeMinutes - a.totalPracticeMinutes
-        )
-        const piece = pieces[0]
-        return piece
+        const pieces = user.pieces.sort(compareFn)
+        return pieces
     }
 
     PieceService.getRecentlyPracticed = async (userId) => {
         const compare = (a, b) => b.lastPracticedDate - a.lastPracticedDate
-        const piece = await PieceService.getSortedPieces(userId, compare)
-        return piece
+        const sorted = await PieceService.getSortedPieces(userId, compare)
+        return sorted[0]
+        // return piee
     }
 
     PieceService.getLongestSincePractice = async (userId) => {
         const compare = (a, b) => a.lastPracticedDate - b.lastPracticedDate
-        const piece = await PieceService.getSortedPieces(userId, compare)
-        return piece
+        const sorted = await PieceService.getSortedPieces(userId, compare)
+        return sorted[0]
     }
 
     PieceService.getMostPracticed = async (userId) => {
         const compare = (a, b) =>
             b.totalPracticeMinutes - a.totalPracticeMinutes
-        const piece = await PieceService.getSortedPieces(userId, compare)
-        return piece
+        const sorted = await PieceService.getSortedPieces(userId, compare)
+        return sorted[0]
     }
 
     PieceService.getLeastPracticed = async (userId) => {
         const compare = (a, b) =>
             a.totalPracticeMinutes - b.totalPracticeMinutes
-        const piece = await PieceService.getSortedPieces(userId, compare)
-        return piece
+        const sorted = await PieceService.getSortedPieces(userId, compare)
+        return sorted[0]
     }
 
     PieceService.deleteAllPieces = async (userId) => {

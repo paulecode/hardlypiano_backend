@@ -4,9 +4,10 @@ const PieceService = require("./pieceService")()
 const PSS = require("./practiceSessionService")()
 
 const listOfPieces = [
-    { title: "mozart", composer: "lacrimosa" },
-    { title: "chopin", composer: "nocturne 48 no 2" },
-    { title: "beethoven", composer: "moonlight sonata" },
+    { composer: "mozart", title: "lacrimosa" },
+    { composer: "chopin", title: "nocturne 48 no 2" },
+    { composer: "beethoven", title: "moonlight sonata" },
+    { composer: "bach", title: "toccata in d minor" },
 ]
 
 const dateAfterMin = (date, min) => {
@@ -15,8 +16,9 @@ const dateAfterMin = (date, min) => {
     return result
 }
 
-const dates = (min) => {
+const dates = (min, dayOffset = 0) => {
     const start = new Date()
+    start.setDate(start.getDate() + dayOffset)
     const end = dateAfterMin(start, min)
     return { start, end }
 }
@@ -185,6 +187,82 @@ describe("PracticeService", () => {
                 await updatePieces()
 
                 expect(practicedPiece.totalPracticeMinutes).toEqual(10)
+            })
+        })
+        describe("correctly sorts all the pieces", () => {
+            const practiceMap = {
+                0: [
+                    { min: 50, daysAgo: 5 },
+                    { min: 5, daysAgo: 0 },
+                ],
+                1: [{ min: 5, daysAgo: 100 }],
+                2: [{ min: 5000, daysAgo: 50 }],
+                3: [{ min: 1, daysAgo: 25 }],
+            }
+            beforeAll(async () => {
+                // for each piece
+                for (const index in practiceMap) {
+                    // for each practice session
+                    const practiceDetails = practiceMap[index]
+                    for (const entry of practiceDetails) {
+                        const sessionDates = dates(entry.min, 0 - entry.daysAgo)
+                        const session = await PSS.createPracticeSession(
+                            sessionDates.start,
+                            sessionDates.end
+                        )
+                        await PieceService.addPracticeSession(
+                            userId,
+                            pieces[index]._id,
+                            session
+                        )
+                        await PieceService.updateTotalPracticeTime(
+                            userId,
+                            pieces[index]._id
+                        )
+                    }
+
+                    await updatePieces()
+                }
+            })
+            it("getRecentlyPracticed returns the most recently practiced piece (0)", async () => {
+                const recent = await PieceService.getRecentlyPracticed(userId)
+                console.log(recent.composer)
+                expect(recent.composer).toEqual(pieces[0].composer)
+            })
+            it("getLongestSincePractice returns the piece practiced the longest time ago (1)", async () => {
+                const longestSince = await PieceService.getLongestSincePractice(
+                    userId
+                )
+                console.log(longestSince.composer)
+                expect(longestSince.composer).toEqual(pieces[1].composer)
+            })
+            it("getMostPracticed returns the most practiced piece in minutes(2)", async () => {
+                const most = await PieceService.getMostPracticed(userId)
+                console.log(most.composer)
+                expect(most.composer).toEqual(pieces[2].composer)
+            })
+            it("getLeastPracticed returns the least practiced piece in minutes (3)", async () => {
+                const least = await PieceService.getLeastPracticed(userId)
+                console.log(least.composer)
+                expect(least.composer).toEqual(pieces[3].composer)
+            })
+            afterAll(() => {
+                console.log("RESULTS")
+
+                pieces
+                    .map((piece) => {
+                        const {
+                            composer,
+                            totalPracticeMinutes,
+                            lastPracticedDate,
+                        } = piece
+                        return {
+                            composer,
+                            min: totalPracticeMinutes,
+                            lastPractice: lastPracticedDate.toUTCString(),
+                        }
+                    })
+                    .forEach(console.log)
             })
         })
     })
