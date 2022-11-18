@@ -31,41 +31,21 @@ const createPracticeSessionService = (PracticeSession = PracticeModel) => {
         return minutes
     }
 
-    PracticeService.createPracticeSession = async (startUTC, endUTC) => {
-        const startTime = new Date(startUTC)
-        const endTime = new Date(endUTC)
+    PracticeService.createPracticeSession = async (startISO, endISO) => {
+        const startTime = new Date(startISO)
+        const endTime = new Date(endISO)
 
         const durationInMinutes = PracticeService.calculateDiffInMinutes(
             startTime,
             endTime
         )
+        // console.log("HERE IS DURATION", startTime, endTime, durationInMinutes)
         const practiceSession = new PracticeSession({
             startTime,
             endTime,
             durationInMinutes,
         })
         return practiceSession
-    }
-
-    PracticeService.addPracticeSession = async ({
-        userId,
-        pieceId,
-        practiceDetails,
-    }) => {
-        const { startTime, endTime } = practiceDetails
-        const durationInMinutes =
-            (endTime.getTime() - startTime.getTime()) / 1000 / 60
-
-        const practiceSession = new Practice({
-            startTime,
-            endTime,
-            durationInMinutes,
-        })
-
-        const piece = await PieceService.getPieceById(userId, pieceId)
-        await PieceService.addPracticeToPiece(piece, practiceSession)
-
-        return await practiceSession.save()
     }
     return PracticeService
 }
