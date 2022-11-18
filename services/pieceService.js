@@ -74,6 +74,38 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         return
     }
 
+    PieceService.addPracticeSession = async (
+        userId,
+        pieceId,
+        practiceSession
+    ) => {
+        const user = await UserService.getUserById(userId)
+        const piece = user.pieces.id(pieceId)
+
+        piece.practiceSessions.push(practiceSession)
+        piece.set({ lastPracticedDate: practiceSession.endDate })
+
+        await user.save()
+
+        return practiceSession
+    }
+
+    PieceService.removePracticeSession = async (
+        userId,
+        pieceId,
+        practiceId
+    ) => {
+        try {
+            const user = await UserService.getUserById(userId)
+            user.pieces.id(pieceId).practiceSessions.id(practiceId).remove()
+            await user.save()
+
+            return
+        } catch (e) {
+            throw e
+        }
+    }
+
     PieceService.deleteManyPieces = async (userId, pieceIds) => {
         if (!userId) throw new Error("User not provided.")
 

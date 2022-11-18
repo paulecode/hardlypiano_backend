@@ -2,58 +2,69 @@ const PracticeService = require("../services/practiceSessionService")()
 
 const PracticeController = {}
 
-PracticeController.post = async (req, res) => {
+PracticeController.post = async (req, res, next) => {
     const userId = req.user._id
     const pieceId = req.params.pieceId
-    const endTime = new Date()
-    const startTime = new Date(endTime.getTime() - 5 * 60 * 1000)
-    const practiceDetails = {
-        startTime,
-        endTime,
-    }
 
     try {
-        const session = await PracticeService.addPracticeSession({
-            pieceId,
-            userId,
-            practiceDetails,
+        const { startDate, endDate } = req.body
+        const session = await PracticeService.createPracticeSession(
+            startDate,
+            endDate
+        )
+        await PieceService.addPracticeSession(userId, pieceId, session)
+        res.status(200).send({
+            message: "Practice session added successfuly",
+            data: session,
         })
-        return res.status(200).send(session)
     } catch (e) {
-        res.status(400).send(e.message)
+        next(e)
     }
-
-    // userId comes from req.user
-    // pieceId comes from express params
-    // practiceDetails come from req.body
-
-    // only startDate and endDate needed
-    // durationInMinutes is calculated by services
-    // await pieceService.updateTotalMinutes()
-    // update pieceService.updateLastPracticed()
 }
 
 PracticeController.get = async (req, res) => {
-    // userId comes from req.user
-    // pieceId comes from express params
-    // practiceId come from express params
-    // if found
-    // get practice id in piece by practiceId (findById)
+    const userId = req.user._id
+    const pieceId = req.params.pieceId
+    const practiceId = req.params.id
+
+    try {
+        const session = await PracticeService.getById(
+            userId,
+            pieceId,
+            practiceId
+        )
+        if (session) res.status(200).send({ data: session })
+        else res.status(404).send({ message: "Practice session not found." })
+    } catch (e) {
+        next(e)
+    }
 }
 
 PracticeController.delete = async (req, res) => {
-    // userId comes from req.user
-    // pieceId comes from express params
-    // practiceId come from express params
-    // if found
-    // practiceService should delete practice session from piece
+    const userId = req.user._id
+    const pieceId = req.params.pieceId
+    const practiceId = req.params.id
+
+    try {
+        await PieceService.removePracticeSession(userId, pieceId, practiceId)
+        res.status(200).send({
+            Message: "Practice session deleted successfully",
+        })
+    } catch (e) {
+        next(e)
+    }
 }
 
 PracticeController.getAll = async (req, res) => {
-    // userId comes from req.user
-    // pieceId comes from express params
-    // should return all practice sessions in piece
-    // can be empty. must be type: Array.
+    const userId = req.user._id
+    const pieceId = req.params.pieceId
+
+    try {
+        const data = await PracticeService.getAll(userId, pieceId)
+        res.status(200).send(data)
+    } catch (e) {
+        next(e)
+    }
 }
 
 module.exports = PracticeController

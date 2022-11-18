@@ -24,6 +24,29 @@ const createPracticeSessionService = (PracticeSession = PracticeModel) => {
         return practiceSession
     }
 
+    PracticeService.calculateDiffInMinutes = (startDate, endDate) => {
+        const ms = endDate - startDate
+        const minutes = Math.floor(ms / 1000 / 60)
+
+        return minutes
+    }
+
+    PracticeService.createPracticeSession = async (startUTC, endUTC) => {
+        const startTime = new Date(startUTC)
+        const endTime = new Date(endUTC)
+
+        const durationInMinutes = PracticeService.calculateDiffInMinutes(
+            startTime,
+            endTime
+        )
+        const practiceSession = new PracticeSession({
+            startTime,
+            endTime,
+            durationInMinutes,
+        })
+        return practiceSession
+    }
+
     PracticeService.addPracticeSession = async ({
         userId,
         pieceId,
