@@ -87,4 +87,52 @@ const update = async (req, res) => {
     }
 }
 
-module.exports = { getAll, create, get, update, deleteOne, deleteMany }
+const getRecentlyPracticed = async (req, res, next) => {
+    const userId = req.user._id
+    try {
+        const piece = await PieceService.getRecentlyPracticed(userId)
+        res.status(200).send({ data: piece })
+    } catch (e) {
+        next(e)
+    }
+}
+const getLongestSincePractice = async (req, res, next) => {
+    const userId = req.user._id
+    try {
+        const piece = await PieceService.getLongestSincePractice(userId)
+        res.status(200).send({ data: piece })
+    } catch (e) {
+        next(e)
+    }
+}
+const getLeastPracticed = async (req, res, next) => {
+    const userId = req.user._id
+    try {
+        const piece = await PieceService.getLeastPracticed(userId)
+        res.status(200).send({ data: piece })
+    } catch (e) {
+        next(e)
+    }
+}
+const getMostPracticed = async (req, res, next) => {
+    const userId = req.user._id
+    try {
+        const piece = await PieceService.getMostPracticed(userId)
+        res.status(200).send({ data: piece })
+    } catch (e) {
+        next(e)
+    }
+}
+
+module.exports = {
+    getAll,
+    create,
+    get,
+    update,
+    deleteOne,
+    deleteMany,
+    getRecentlyPracticed,
+    getLeastPracticed,
+    getLongestSincePractice,
+    getMostPracticed,
+}
