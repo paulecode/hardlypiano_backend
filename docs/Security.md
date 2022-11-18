@@ -20,17 +20,17 @@ Below you will find a list of security measures that we have taken (or otherwise
 
 #### OWASP Password Strength Requirements
 
-We enforce the [OWASP password strength requirements](#missing) when users create or change their passwords.
+We enforce the [OWASP password strength requirements](https://owasp.deteact.com/cheat/cheatsheets/Authentication_Cheat_Sheet.html) when users create or change their passwords.
 
 #### Password hashing
 
-[bcrypt](#missing) is used to hash users’ passwords on register and decrypt them on login.
+[bcrypt](https://www.npmjs.com/package/bcrypt) is used to hash users’ passwords on register and decrypt them on login.
 
-Measure considered: replacing bcrypt with [scrypt](#missing link) for stronger password hashing.
+Measure considered: replacing bcrypt with [scrypt](https://www.npmjs.com/package/scrypt) for stronger password hashing.
 
 #### JWT Auth Tokens
 
-[JSON Web Tokens](#missing) are used to generate authentication tokens when a user logs in. They expire after 1 day, and can be refreshed using the /auth/refreshtoken endpoint.
+[JSON Web Tokens](https://jwt.io/) are used to generate authentication tokens when a user logs in. They expire after 1 day, and can be refreshed using the /auth/refreshtoken endpoint.
 
 JWTs are passed in the Auth-Token HTTP header. On the client side, they are currently stored in local Swift memory.
 
@@ -56,7 +56,7 @@ This middleware ensures that a valid JWT is provided when a request tries to rea
 
 This middleware ensures that two users are active friends when one user tries to read another user’s data.
 
-As the application grows, user permissions will be more strictly managed using the [Access Control Module](#missing) and adhering to the principle of least privilege.
+As the application grows, user permissions will be more strictly managed using the [Access Control Module](https://www.npmjs.com/package/acl) and adhering to the principle of least privilege.
 
 ---
 
@@ -92,11 +92,11 @@ iOS and Swift have generally strong security. The only realistic threat is compr
 
 #### Planned: HSTS
 
-We currently don't have an SSL certificate (more on that below). Once we configure HTTPS and a working web-app, we plan to enforce the [HTTPS Strict Transport Security](#missing) policy to make sure connections are never established over HTTP, defending against MITM attacks.
+We currently don't have an SSL certificate (more on that below). Once we configure HTTPS and a working web-app, we plan to enforce the [HTTPS Strict Transport Security](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) policy to make sure connections are never established over HTTP, defending against MITM attacks.
 
 #### Sanitizing inputs
 
-[node sanitize](#missing) is used to sanitize user input in request queries and bodies. This prevents potentially malicious input from attempting NoSQL injections to the database.
+[node sanitize](https://www.npmjs.com/package/sanitize) is used to sanitize user input in request queries and bodies. This prevents potentially malicious input from attempting NoSQL injections to the database.
 
 #### Query pollution
 
@@ -108,7 +108,7 @@ Currently, none of our endpoints use query parameters as input. However, for fut
 
 #### Server too busy
 
-The [toobusy-js](#missing) Node module is used to defend against DoS (Denial of Service) attacks. It monitors the event loop and response time. After a certain threshold, incoming requests receive a 503 Server Too Busy response.
+The [toobusy-js](https://www.npmjs.com/package/toobusy-js) Node module is used to defend against DoS (Denial of Service) attacks. It monitors the event loop and response time. After a certain threshold, incoming requests receive a 503 Server Too Busy response.
 
 #### Environment secrets
 
@@ -116,13 +116,13 @@ The environment secrets needed to run the server are hidden from the GitHub repo
 
 #### Planned: Vault
 
-In the future, we would like to implement a service like [Vault](#missing) to securely store, access and deploy our environment secrets.
+In the future, we would like to implement a service like [Vault](https://developer.hashicorp.com/vault) to securely store, access and deploy our environment secrets.
 
 ---
 
 ### MongoDB security
 
-Our database is hosted on [MongoDB Atlas](#missing), which offers several security measures out of the box, such as network isolation and E2E encryption. Additionally, we are careful with our credentials and authentication.
+Our database is hosted on [MongoDB Atlas](https://www.mongodb.com/atlas/database), which offers several security measures out of the box, such as network isolation and E2E encryption. Additionally, we are careful with our credentials and authentication.
 
 #### Whitelisted users
 

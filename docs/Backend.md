@@ -6,15 +6,15 @@ Modules covered: **SE_22 Web Backend Technologies**
 
 The development team comprises of Paul Ebert and Irakli Goderdzishvili. Both contributed to the development of the backend, and divided some responsibilities.
 
-| Topic                        | Team member | Example commits |
-| ---------------------------- | ----------- | --------------- |
-| UserService, PieceService    | Irakli      | #missing        |
-| AuthService, PracticeService | Paul        |                 |
-| Integration and deployment   | Paul        |                 |
-| Testing infrastructure       | Irakli      |                 |
-| Refactoring                  | Both        |                 |
-| Middleware, error-handling   | Irakli      |                 |
-| Security measures            | Both        |                 |
+| Topic                        | Team member | Example commits                                          |
+| ---------------------------- | ----------- | -------------------------------------------------------- |
+| UserService, PieceService    | Irakli      | d0c16f2ac0ae679541bf6d69ff76577ee4a24b84                 |
+| AuthService, PracticeService | Paul        | https://github.com/paulecode/hardlypiano_backend/pull/12 |
+| Integration and deployment   | Paul        | b13fbf4b3746f84978305909ef6b03f3e718adc1                 |
+| Testing infrastructure       | Irakli      | 4f9516ca53f110a805b130ae726801cf1fff0126                 |
+| Refactoring                  | Both        | https://github.com/paulecode/hardlypiano_backend/pull/15 |
+| Middleware, error-handling   | Irakli      | c297e2589543828fa26f6d1afaff3f6729028d74                 |
+| Security measures            | Both        | https://github.com/paulecode/hardlypiano_backend/pull/16 |
 
 ---
 
@@ -254,6 +254,6 @@ Our REST API is comprised of a few routes and endpoints.
 -   `/pieces` — for getting and posting musical pieces
 -   `/pieces/:id/practice` — for logging practice sessions
 
-Visit the [API Documentation](#missing) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
+Visit the [API Documentation](https://documenter.getpostman.com/view/12019388/2s8YmRNMNT) for full details of each endpoint, and example requests/responses. The API documentation is created and hosted on Postman.
 
 ---

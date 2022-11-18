@@ -118,4 +118,4 @@ For a detailed look into security threats, security measures and considerations,
 
 Here is a screen recording of the iOS app interacting with the backend:
 
-[❗ Upload video here](#missing)
+[](https://drive.google.com/file/d/1CaWtVOr2xA-zr8CedFyF_i18Pukh14Jb/view?usp=sharing)
