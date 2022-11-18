@@ -1,14 +1,14 @@
 # Hardly Piano — Security
 
-## Introduction
-
-Detailed documentation of security threats, measures taken, and additional concerns.
+Overview of the threat model of our project, as well as security measures active, configured or planned.
 
 Modules covered: **SE_09 Cyber Security**
 
 ## Threat model
 
-![placeholder-name](.//img/placeholder.jpg)
+![placeholder-name](./img/Threat_Model_Diagram.png)
+
+---
 
 ## Security measures
 
@@ -80,20 +80,19 @@ To prevent Cross-Site Request Forgery attacks, the server would generate cryptog
 
 ### Mobile app (iOS Swift)
 
--   Generally good security
--   Apple Keyring for sensitive credentials
+iOS and Swift have generally strong security. The only realistic threat is compromised device access or iCloud credentials, which can be used to log in without authorization.
 
 ---
 
 ### Node.js server
 
-#### CORS policy
+#### Configured: CORS policy
 
-[CORS](#missing) is enabled in the Node application, in order to only allow requests from the Swift app and Vue.js web-app (which have different origins).
+[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) is enabled in the Node application (on a different branch), but it is pending release. CORS will be used to ensure that traffic only comes from the iOS and Vue.js app (which will be hosted separately).
 
 #### Planned: HSTS
 
-We currently don't have an SSL certificate (more on that below). Once we configure HTTPS, we plan to enforce the [HTTPS Strict Transport Security](#missing) policy to protect against man-in-the-middle attacks.
+We currently don't have an SSL certificate (more on that below). Once we configure HTTPS and a working web-app, we plan to enforce the [HTTPS Strict Transport Security](#missing) policy to make sure connections are never established over HTTP, defending against MITM attacks.
 
 #### Sanitizing inputs
 
@@ -129,13 +128,9 @@ Our database is hosted on [MongoDB Atlas](#missing), which offers several securi
 
 We have a fixed list of username + password combinations that are authorized to connect to our database.
 
-![image here](#missing)
-
 #### Whitelisted IPs
 
 We have a list of whitelisted IPs that are authorized to connect to our database. However, these measures were sometimes loosened to allow our deployment pipeline to function smoothly, as the IP address provided by AWS was not static.
-
-![image here](#missing)
 
 ---
 

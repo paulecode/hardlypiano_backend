@@ -1,8 +1,6 @@
 # Hardly Piano — Database
 
-## Introduction
-
-Detailed documentation of database models, queries and MongoDB hosting.
+Overview of our database schemas, a database diagram, and reasoning behind decisions.
 
 Related modules: **SE_06 NoSQL Databases**
 
