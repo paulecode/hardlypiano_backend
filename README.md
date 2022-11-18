@@ -1,18 +1,16 @@
 # Hardly Piano
 
-[project background, information, team members, backend structure]
+Hardly Piano is an app designed to help musicians keep track of their practice sessions and repertoire. It currently comprises of an iOS app built with SwiftUI, a server built with Node+Express, and a MongoDB database hosted on MongoDB Atlas.
 
-[❗ Link to live server (use with Postman)](http://ec2-3-66-192-132.eu-central-1.compute.amazonaws.com:3000)
+[Link to live server (use with Postman)](http://ec2-3-66-192-132.eu-central-1.compute.amazonaws.com:3000)
 
-[❗ Link to Swift app repo](https://github.com/paulecode/HardlyPianoSwift)
+[Link to Swift app repo](https://github.com/paulecode/HardlyPianoSwift)
 
 ---
 
 ## Project architecture
 
-![placeholder-name](./docs/img/placeholder.jpg)
-
-### Technologies used
+![architecture](./docs/img/Architecture.png)
 
 ---
 
@@ -54,17 +52,39 @@ MONGODB_URI="mongodb+srv://codeuni:unfortunatelycleartext@cluster0.z5lpzob.mongo
 TOKEN_SECRET="64e49888ea55824fe86c1030daf7bfe1ccafba546522ab237ea5480305ec93a26d1c494042e72ff5c4c0f2942762438fd4ec305081782baeda9f0ce160d0ecc6"
 ```
 
-To run the server locally, please run
+#### Run scripts
 
-`npm run dev`
+##### Running a development server
 
-#### Running tests
+```bash
+# starts a server, connects to staging database and watches for file changes
+npm run dev
+```
+
+##### Running a production server
+
+```bash
+# starts a production server and connects to the production database
+npm run prod
+```
+
+##### Running tests
+
+```bash
+# test all files ending in '.test.js', using Jest
+npm run test
+
+# test specific files or directories
+npm run test -- [filename | directory]
+```
 
 ---
 
 ## Node + Express Backend
 
-[Basic overview of project structure and REST API]
+The backend comprises of a very common Node.js + Express.js + MongoDB tech stack, which serves data to an iOS app (with a Vue.js front-end planned for the future).
+
+The architecture is currently **monolithic**. The amount of features, the expected traffic, and the current development team is quite small, so there is currently no need for significant scaling or maintainability measures like SOA or microservice architecture.
 
 **SE_22 Web Backend Technologies**  
 For a detailed look into the Node server and REST API, please visit the [Backend documentation](./docs/Backend.md).
@@ -74,9 +94,6 @@ For a detailed look into the Node server and REST API, please visit the [Backend
 ## Database
 
 ![Database diagram](./docs/img/Database_Diagram.png)
-[🖼 Database model diagram]
-
-[Describe the use of MongoDB as database, mongoose as ODM and MongoDB Atlas as hosting]
 
 **SE_06 NoSQL Databases**  
 For a detailed look into the MongoDB database, please visit the [Database documentation](./docs/Database.md)
@@ -86,18 +103,9 @@ For a detailed look into the MongoDB database, please visit the [Database docume
 ## Deployment
 
 ![CI/CD Diagram](./docs/img/CI_CD_Diagram.png)
-[🖼 Deployment/pipeline diagram]
-
-[Basic description of AWS hosting, deployment pipeline]
 
 **SE_23 CI/CD**  
 For a detailed look into the deployment pipeline, please visit the [CI/CD documentation](./docs/CI_CD.md)
-
----
-
-## Automated testing
-
-[For detailed explanation of unit and integration testing]
 
 ---
 

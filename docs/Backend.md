@@ -20,6 +20,8 @@ The development team comprises of Paul Ebert and Irakli Goderdzishvili. Both con
 
 ## Overview
 
+![Architecture Diagram](./img/Architecture.png)
+
 The backend comprises of a very common Node.js + Express.js + MongoDB tech stack, which serves data to an iOS app (with a Vue.js front-end planned for the future).
 
 The architecture is currently **monolithic**. The amount of features, the expected traffic, and the current development team is quite small, so there is currently no need for significant scaling or maintainability measures like SOA or microservice architecture.
