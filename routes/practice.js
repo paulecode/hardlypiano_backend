@@ -5,7 +5,7 @@ const path = "/pieces/:pieceId/practice"
 
 router.use(isAuthenticated)
 
-router.get("/", practiceController.get)
+router.get("/", practiceController.getAll)
 router.get("/:id", practiceController.get)
 router.delete("/:id", practiceController.delete)
 router.post("/", practiceController.post)

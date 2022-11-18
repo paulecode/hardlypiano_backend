@@ -1,6 +1,8 @@
 const PracticeService = require("../services/practiceSessionService")()
 
-const create = async (req, res) => {
+const PracticeController = {}
+
+PracticeController.post = async (req, res) => {
     const userId = req.user._id
     const pieceId = req.params.pieceId
     const endTime = new Date()
@@ -22,4 +24,4 @@ const create = async (req, res) => {
     }
 }
 
-module.exports = { create }
+module.exports = PracticeController
