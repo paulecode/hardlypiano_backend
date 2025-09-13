@@ -1,6 +1,6 @@
-const db = require("../db")
-const User = require("../models/User")
-const createUserService = require("./userService")
+const db = require("../../db")
+const User = require("../../models/User")
+const createUserService = require("../../services/userService")
 const UserService = createUserService(User)
 
 beforeAll(async () => {

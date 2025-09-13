@@ -82,7 +82,7 @@ describe("makes successful API call", () => {
                 expect(response.statusCode).toEqual(200)
                 expect(response.headers["auth-token"]).toBeDefined()
             })
-            xit("successfully logs in a user and receives a refresh token", async () => {
+            it("successfully logs in a user and receives a refresh token", async () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send(user)
@@ -98,7 +98,7 @@ describe("makes successful API call", () => {
                 expect(response.statusCode).not.toEqual(200)
                 expect(response.body.message).toBeDefined()
             })
-            xit("returns an error for expired token", async (done) => {
+            it("returns an error for expired token", async (done) => {
                 jest.setTimeout(10000)
 
                 const response = await request(app)

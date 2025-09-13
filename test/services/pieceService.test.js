@@ -1,8 +1,8 @@
-const PieceServiceConstructor = require("./pieceService")
-const db = require("../db")
-const PieceModel = require("../models/Piece")
-const UserModel = require("../models/User")
-const UserService = require("../services/userService")(UserModel)
+const PieceServiceConstructor = require("../../services/pieceService")
+const db = require("../../db")
+const PieceModel = require("../../models/Piece")
+const UserModel = require("../../models/User")
+const UserService = require("../../services/userService")(UserModel)
 const PieceService = PieceServiceConstructor(PieceModel, UserService)
 
 describe("PieceService functions", () => {

@@ -1,7 +1,7 @@
-const db = require("../db")
-const UserService = require("./userService")()
-const PieceService = require("./pieceService")()
-const PSS = require("./practiceSessionService")()
+const db = require("../../db")
+const UserService = require("../../services/userService")()
+const PieceService = require("../../services/pieceService")()
+const PSS = require("../../services/practiceSessionService")()
 
 const listOfPieces = [
     { composer: "mozart", title: "lacrimosa" },

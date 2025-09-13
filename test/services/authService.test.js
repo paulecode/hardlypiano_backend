@@ -1,4 +1,4 @@
-const createAuthService = require("./authService")
+const createAuthService = require("../../services/authService")
 
 describe("AuthService.js", () => {
     const AuthService = createAuthService()

@@ -1,6 +1,6 @@
-const db = require("./development-db")
+const db = require("../../db/development-db")
 const mongoose = require("mongoose")
-const User = require("../models/User")
+const User = require("../../models/User")
 
 describe("connects to production db", () => {
     beforeAll(() => {
