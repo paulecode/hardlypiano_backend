@@ -2,7 +2,6 @@ const pieceService = require("../services/pieceService")()
 
 const getAll = async (req, res) => {
     const userId = req.user._id
-    console.log(req.body)
 
     try {
         const pieces = await pieceService.getPieces(userId)
@@ -37,7 +36,6 @@ const create = async (req, res) => {
 }
 
 const deleteOne = async (req, res) => {
-    console.log("got here")
     const userId = req.user._id
     const pieceId = req.params.id
 
@@ -82,7 +80,6 @@ const update = async (req, res) => {
         )
         return res.status(200).send({ data: piece })
     } catch (e) {
-        console.log(e)
         res.status(400).send(e.message)
     }
 }

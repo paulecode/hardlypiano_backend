@@ -226,29 +226,23 @@ describe("PracticeService", () => {
             })
             it("getRecentlyPracticed returns the most recently practiced piece (0)", async () => {
                 const recent = await PieceService.getRecentlyPracticed(userId)
-                console.log(recent.composer)
                 expect(recent.composer).toEqual(pieces[0].composer)
             })
             it("getLongestSincePractice returns the piece practiced the longest time ago (1)", async () => {
                 const longestSince = await PieceService.getLongestSincePractice(
                     userId
                 )
-                console.log(longestSince.composer)
                 expect(longestSince.composer).toEqual(pieces[1].composer)
             })
             it("getMostPracticed returns the most practiced piece in minutes(2)", async () => {
                 const most = await PieceService.getMostPracticed(userId)
-                console.log(most.composer)
                 expect(most.composer).toEqual(pieces[2].composer)
             })
             it("getLeastPracticed returns the least practiced piece in minutes (3)", async () => {
                 const least = await PieceService.getLeastPracticed(userId)
-                console.log(least.composer)
                 expect(least.composer).toEqual(pieces[3].composer)
             })
             afterAll(() => {
-                console.log("RESULTS")
-
                 pieces
                     .map((piece) => {
                         const {

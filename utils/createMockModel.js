@@ -33,8 +33,6 @@ function createMockModel(collection = []) {
         }
         static find(filter) {
             queryResults = []
-            // return []
-            // console.log(collection)
             this.startQuery()
             queryResults = queryResults.filter((item) => {
                 for (const key in filter) {
@@ -42,7 +40,6 @@ function createMockModel(collection = []) {
                 }
                 return true
             })
-            // queryResults = [...found]
             return this
         }
         static remove(filter) {

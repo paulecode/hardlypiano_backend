@@ -3,7 +3,6 @@ const userService = require("../services/userService")(userModel)
 
 async function getAll(req, res) {
     const result = await userService.getUsers()
-    console.log(result)
     res.send(result)
 }
 
