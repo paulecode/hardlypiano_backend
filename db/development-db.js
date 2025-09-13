@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
-const { getUri } = require("../utils/dbUtils")
+const { getDevelopmentUri } = require("../utils/dbUtils")
 
 const connect = async () => {
-    const uri = getUri()
+    const uri = getDevelopmentUri()
     await mongoose
         .connect(uri)
         .then(() => {
