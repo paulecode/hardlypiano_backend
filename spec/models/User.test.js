@@ -1,5 +1,5 @@
-const User = require("./User")
-const db = require("../db")
+const User = require("../../models/User")
+const db = require("../../db")
 
 describe("model User is defined and functional", () => {
     beforeAll(async () => {

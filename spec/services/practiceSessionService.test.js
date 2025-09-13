@@ -242,22 +242,6 @@ describe("PracticeService", () => {
                 const least = await PieceService.getLeastPracticed(userId)
                 expect(least.composer).toEqual(pieces[3].composer)
             })
-            afterAll(() => {
-                pieces
-                    .map((piece) => {
-                        const {
-                            composer,
-                            totalPracticeMinutes,
-                            lastPracticedDate,
-                        } = piece
-                        return {
-                            composer,
-                            min: totalPracticeMinutes,
-                            lastPractice: lastPracticedDate.toUTCString(),
-                        }
-                    })
-                    .forEach(console.log)
-            })
         })
     })
 })

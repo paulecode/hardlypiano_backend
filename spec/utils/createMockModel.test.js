@@ -1,4 +1,4 @@
-const createMockModel = require("./createMockModel")
+const createMockModel = require("../../utils/createMockModel")
 
 describe("mock User model", () => {
     const User = createMockModel([])
