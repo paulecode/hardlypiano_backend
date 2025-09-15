@@ -1,4 +1,5 @@
 const PracticeService = require("../services/practiceSessionService")()
+const PieceService = require("../services/pieceService")()
 
 const PracticeController = {}
 
@@ -23,7 +24,7 @@ PracticeController.post = async (req, res, next) => {
     }
 }
 
-PracticeController.get = async (req, res) => {
+PracticeController.get = async (req, res, next) => {
     const userId = req.user._id
     const pieceId = req.params.pieceId
     const practiceId = req.params.id
@@ -41,7 +42,7 @@ PracticeController.get = async (req, res) => {
     }
 }
 
-PracticeController.delete = async (req, res) => {
+PracticeController.delete = async (req, res, next) => {
     const userId = req.user._id
     const pieceId = req.params.pieceId
     const practiceId = req.params.id
@@ -56,11 +57,10 @@ PracticeController.delete = async (req, res) => {
     }
 }
 
-PracticeController.getAll = async (req, res) => {
-    const userId = req.user._id
-    const pieceId = req.params.pieceId
-
+PracticeController.getAll = async (req, res, next) => {
     try {
+        const userId = req.user._id
+        const pieceId = req.params.pieceId
         const data = await PracticeService.getAll(userId, pieceId)
         res.status(200).send(data)
     } catch (e) {
