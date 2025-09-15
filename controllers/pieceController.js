@@ -7,6 +7,7 @@ const getAll = async (req, res) => {
         const pieces = await pieceService.getPieces(userId)
         return res.status(200).send({ data: pieces })
     } catch (e) {
+        console.log("HERE IS ERROR", e)
         res.status(400).send(e.message)
     }
 }
@@ -87,7 +88,7 @@ const update = async (req, res) => {
 const getRecentlyPracticed = async (req, res, next) => {
     const userId = req.user._id
     try {
-        const piece = await PieceService.getRecentlyPracticed(userId)
+        const piece = await pieceService.getRecentlyPracticed(userId)
         res.status(200).send({ data: piece })
     } catch (e) {
         next(e)
@@ -96,7 +97,7 @@ const getRecentlyPracticed = async (req, res, next) => {
 const getLongestSincePractice = async (req, res, next) => {
     const userId = req.user._id
     try {
-        const piece = await PieceService.getLongestSincePractice(userId)
+        const piece = await pieceService.getLongestSincePractice(userId)
         res.status(200).send({ data: piece })
     } catch (e) {
         next(e)
@@ -105,7 +106,7 @@ const getLongestSincePractice = async (req, res, next) => {
 const getLeastPracticed = async (req, res, next) => {
     const userId = req.user._id
     try {
-        const piece = await PieceService.getLeastPracticed(userId)
+        const piece = await pieceService.getLeastPracticed(userId)
         res.status(200).send({ data: piece })
     } catch (e) {
         next(e)
@@ -114,7 +115,7 @@ const getLeastPracticed = async (req, res, next) => {
 const getMostPracticed = async (req, res, next) => {
     const userId = req.user._id
     try {
-        const piece = await PieceService.getMostPracticed(userId)
+        const piece = await pieceService.getMostPracticed(userId)
         res.status(200).send({ data: piece })
     } catch (e) {
         next(e)

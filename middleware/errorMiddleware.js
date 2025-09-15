@@ -7,7 +7,7 @@ errorMiddleware.notFound = (req, res, next) => {
 }
 
 errorMiddleware.log = (err, req, res, next) => {
-    console.log(err.statusCode, err.message || "Error not specified.")
+    // console.log(err.statusCode, err.message || "Error not specified.")
     next(err)
 }
 

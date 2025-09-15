@@ -1,5 +1,5 @@
 module.exports.getDevelopmentUri = () => {
-    const uri = process.env.MONGODB_URI
+    const uri = process.env.MONGODB_DEV_URI
     return uri
 }
 

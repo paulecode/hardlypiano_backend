@@ -9,7 +9,11 @@ const isAuthenticated = (req, res, next) => {
         req.user = verified
         next()
     } catch (e) {
-        res.status(400).send("Access denied. Invalid token.")
+        if (e.message === "Token expired.") {
+            res.status(401).send("Access denied. Token expired.")
+        } else {
+            res.status(400).send("Access denied. Invalid token.")
+        }
     }
 }
 

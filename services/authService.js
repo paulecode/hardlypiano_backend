@@ -5,7 +5,9 @@ const owasp = require("owasp-password-strength-test")
 const createAuthService = () => {
     const AuthService = {}
     const secret = process.env.TOKEN_SECRET || "12345"
-    const tokenExpiration = process.env.NODE_ENV === "test" ? "5s" : "15m"
+    const refreshSecret = process.env.REFRESH_TOKEN_SECRET || "refresh12345"
+    const tokenExpiration = process.env.NODE_ENV === "test" ? "3s" : "15m"
+    const refreshTokenExpiration = "7d"
 
     AuthService.checkPasswordStrength = (password) => {
         if (!password) throw new Error("Password not provided")
@@ -40,13 +42,38 @@ const createAuthService = () => {
         return token
     }
 
+    AuthService.generateRefreshToken = (payload) => {
+        if (!payload) throw new Error("Payload not provided")
+
+        const refreshToken = jwt.sign(payload, refreshSecret, {
+            expiresIn: refreshTokenExpiration,
+        })
+        return refreshToken
+    }
+
     AuthService.verifyToken = (token) => {
         if (!token) throw new Error("Token not provided.")
         try {
             const payload = jwt.verify(token, secret)
             return payload
-        } catch {
+        } catch (error) {
+            if (error.name === "TokenExpiredError") {
+                throw new Error("Token expired.")
+            }
             throw new Error("Invalid token.")
+        }
+    }
+
+    AuthService.verifyRefreshToken = (refreshToken) => {
+        if (!refreshToken) throw new Error("Refresh token not provided.")
+        try {
+            const payload = jwt.verify(refreshToken, refreshSecret)
+            return payload
+        } catch (error) {
+            if (error.name === "TokenExpiredError") {
+                throw new Error("Refresh token expired.")
+            }
+            throw new Error("Invalid refresh token.")
         }
     }
 
@@ -56,8 +83,11 @@ const createAuthService = () => {
             const valid = await AuthService.isPasswordCorrect(password, hash)
             if (!valid) throw new Error("2")
 
-            const token = AuthService.generateToken({ _id: user.id })
-            return token
+            const payload = { _id: user.id, username: user.username }
+            const token = AuthService.generateToken(payload)
+            const refreshToken = AuthService.generateRefreshToken(payload)
+
+            return { token, refreshToken }
         } catch (e) {
             throw new Error("Login failed. Invalid credentials.")
         }
