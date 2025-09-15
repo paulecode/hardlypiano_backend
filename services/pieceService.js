@@ -22,7 +22,7 @@ const createPieceService = (Piece = PieceModel, UserService = userService) => {
         const piece = new Piece(pieceDetails)
         piece.lastPracticedDate = null
         piece.totalPracticeMinutes = 0
-        await piece.save()
+
         await UserService.addPiece(userId, piece)
 
         return piece
