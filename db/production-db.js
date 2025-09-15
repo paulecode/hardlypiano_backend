@@ -3,15 +3,16 @@ const { getProductionUri } = require("../utils/dbUtils")
 
 const connect = async () => {
     const uri = getProductionUri()
-    const num = await mongoose
-        .connect(uri)
+    return await mongoose
+        .connect(uri, {
+            autoCreate: false,
+            autoIndex: false,
+            bufferCommands: false,
+        })
         .then(() => {
             return
         })
-        .catch((e) => {
-            console.log(e)
-        })
-    return num
+        .catch((e) => console.log(e))
 }
 
 const close = async () => {

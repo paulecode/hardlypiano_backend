@@ -4,7 +4,11 @@ const { getDevelopmentUri } = require("../utils/dbUtils")
 const connect = async () => {
     const uri = getDevelopmentUri()
     await mongoose
-        .connect(uri)
+        .connect(uri, {
+            autoCreate: false,
+            autoIndex: false,
+            bufferCommands: false,
+        })
         .then(() => {
             return
         })
