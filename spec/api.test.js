@@ -99,12 +99,20 @@ describe("makes successful API call", () => {
                 expect(response.statusCode).not.toEqual(200)
                 expect(response.body.message).toBeDefined()
             })
-            xit("returns an error for expired token", async () => {
+            it("returns an error for expired token", async () => {
                 const response = await request(app)
                     .post("/auth/login")
                     .send(user)
                 const { token } = response.body
 
+                await new Promise((resolve) => setTimeout(resolve, 4 * 1000))
+
+                const expiredResponse = await request(app)
+                    .get("/users")
+                    .set("Auth-Token", token)
+                    .send()
+                expect(expiredResponse.statusCode).not.toEqual(200)
+            }, 10000)
                 await new Promise((resolve) => setTimeout(resolve, 4 * 1000))
 
                 const expiredResponse = await request(app)
