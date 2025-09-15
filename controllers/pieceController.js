@@ -7,7 +7,6 @@ const getAll = async (req, res) => {
         const pieces = await pieceService.getPieces(userId)
         return res.status(200).send({ data: pieces })
     } catch (e) {
-        console.log("HERE IS ERROR", e)
         res.status(400).send(e.message)
     }
 }

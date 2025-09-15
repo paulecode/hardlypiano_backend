@@ -3,6 +3,7 @@ const router = express.Router()
 const path = "/pieces"
 
 const pieceController = require("../controllers/pieceController")
+const practiceController = require("../controllers/practiceController")
 const isAuthenticated = require("../middleware/isAuthenticated")
 
 // Authenticated middleware
@@ -15,6 +16,11 @@ router.patch("/:id", pieceController.update)
 router.post("/", pieceController.create)
 router.delete("/:id", pieceController.deleteOne)
 router.delete("/", pieceController.deleteMany)
+
+router.get("/:pieceId/practice", practiceController.getAll)
+router.get("/:pieceId/practice/:id", practiceController.get)
+router.delete("/:pieceId/practice", practiceController.delete)
+router.post("/:pieceId/practice", practiceController.post)
 
 router.get("/recently-practiced", pieceController.getRecentlyPracticed)
 router.get("/longest-since-practice", pieceController.getLongestSincePractice)
